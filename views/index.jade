@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  table.table.table-hover.table-condensed.table-responsive
+    thead
+      tr
+        th #
+        th Task
+        th.text-right Time
+
+    tbody
+      - each task in tasks
+        tr
+          th= task.id
+          td
+            a(href="assign/#{task.id}")= task.title
+          td.text-right
+            small= task.time

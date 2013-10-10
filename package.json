@@ -1,0 +1,28 @@
+{
+  "name": "moz-one-and-done",
+  "version": "0.0.1",
+  "description": "Prototype of One-and-Done -moz-QA site.",
+  "main": "server.js",
+  "author": "Peter deHaan <pdehaan@mozilla.com>",
+  "license": "https://raw.github.com/pdehaan/one-and-done/master/LICENSE",
+  "private": true,
+  "homepage": "https://github.com/pdehaan/one-and-done",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pdehaan/one-and-done.git"
+  },
+  "bugs": "https://github.com/pdehaan/one-and-done/issues",
+  "scripts": {
+    "start": "node server.js",
+    "test": "grunt"
+  },
+  "dependencies": {
+    "express": "3.4.0",
+    "jade": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "load-grunt-tasks": "~0.1.0"
+  }
+}
