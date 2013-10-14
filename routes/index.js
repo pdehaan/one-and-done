@@ -12,7 +12,6 @@ var fs = require("fs"),
 exports.index = function (req, res) {
   "use strict";
 
-  var tasksJSON = "";
   request('https://onedone-dev.firebaseIO.com/.json', function (error, response, body) {
     if (!error && response.statusCode === 200) {
       console.log(body);
