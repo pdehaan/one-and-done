@@ -15,13 +15,11 @@ exports.index = function (req, res) {
   var tasksJSON = "";
   request('https://onedone-dev.firebaseIO.com/.json', function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log(body); // Print the google web page.
-      tasksJSON = body;
+      console.log(body);
       res.render("index", {
         "title": "Mozilla One and Done",
-        "tasks": JSON.parse(tasksJSON)
+        "tasks": JSON.parse(body)
       });
     }
   });
-
 };
