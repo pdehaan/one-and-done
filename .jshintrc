@@ -1,7 +1,16 @@
 {
+  "boss": true,
   "curly": true,
-  "eqnull": true,
   "eqeqeq": true,
+  "eqnull": true,
+  "indent": 2,
+  "maxlen": 100,
+  "newcap": true,
   "node": true,
-  "undef": true
+  "onecase": true,
+  "smarttabs": true,
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "white": true
 }
