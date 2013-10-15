@@ -9,6 +9,10 @@ block content
         th Task
         th.text-right Time
 
+    input(type='text', value='#{user}')
+    if user && task_id
+      p current task: #{task_id}
+
     tbody
       - each task in tasks
         tr
