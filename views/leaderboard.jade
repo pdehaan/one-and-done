@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+  table.table.table-hover.table-condensed.table-responsive
+    thead
+      tr
+        th User
+        th.text-right Tasks Completed
+
+    tbody
+      - each value, key in users
+        tr
+          td #{key}
+          td.text-right #{value.totalTasks}
