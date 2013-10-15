@@ -30,6 +30,8 @@ if (app.get('env') === 'development') {
 app.get('/', routes.index);
 app.get('/leaderboard', routes.leaderboard);
 
-http.createServer(app).listen(app.get('port'), function() {
+http.createServer(app).listen(app.get('port'), function () {
+  "use strict";
+
   console.log('Express server listening on port %d', app.get('port'));
 });

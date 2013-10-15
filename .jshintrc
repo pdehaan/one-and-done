@@ -9,7 +9,7 @@
   "node": true,
   "onecase": true,
   "smarttabs": true,
-  "strict": true,
+  "strict": false,
   "undef": true,
   "unused": true,
   "white": true
