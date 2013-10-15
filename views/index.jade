@@ -2,18 +2,21 @@ extends layout
 
 block content
 
+  form.form-inline(name="input", action="", method="GET", role="form")
+    div.form-group
+      label.sr-only(for="user")
+        p User name
+      input#user.form-control(type="text", placeholder="User name", value="#{user}")
+
+      if user && task_id
+        p current task: #{task_id} #{task_title}
+
   table.table.table-hover.table-condensed.table-responsive
     thead
       tr
         th #
         th Task
         th.text-right Time
-
-  form(name="input", action="", method="get")
-    | Username:
-    input(id='user', type='text', value='#{user}')
-    if user && task_id
-      p current task: #{task_id} #{task_title}
 
     tbody
       - each task in tasks

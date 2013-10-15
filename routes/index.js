@@ -20,7 +20,7 @@ function getTaskById(id, data){
   //loop over taskData for the title
   for (var key in data) {
     for (var prop in data[key]) {
-      if (prop == "id" && data[key][prop] == id){
+      if (prop === "id" && data[key][prop] === id){
         return data[key];
       }
     }
@@ -45,19 +45,19 @@ exports.index = function (req, res) {
         var userData = snap.val();
         if (userData === null){
           // Add new user with data
-          users.child(user).update({currentTask:task_id, 
+          users.child(user).update({currentTask:task_id,
                                     totalTasks:1});
         }else{
           // returning user
           var newTotalTasks = userData.totalTasks+1;
-          users.child(user).set({currentTask:task_id, 
+          users.child(user).set({currentTask:task_id,
                                              totalTasks:newTotalTasks});
         }
 
         var task = getTaskById(task_id, taskData);
 
-        renderIndex(res, {"tasks":taskData, 
-                          "user":user, 
+        renderIndex(res, {"tasks":taskData,
+                          "user":user,
                           "task_id":task_id,
                           "task_title":task.title});
       });
@@ -76,7 +76,7 @@ exports.leaderboard = function (req, res) {
   users.once('value', function(snap) {
     var usersList = snap.val();
     console.log(usersList);
-    res.render("leaderboard", 
+    res.render("leaderboard",
               {"users":usersList});
   });
 };
