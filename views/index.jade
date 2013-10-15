@@ -9,15 +9,15 @@ block content
         th Task
         th.text-right Time
 
-    input(type='text', value='#{user}')
+    input(id='user_tf', type='text', value='#{user}')
     if user && task_id
-      p current task: #{task_id}
+      p current task: #{task_id} #{task_title}
 
     tbody
       - each task in tasks
         tr
           th= task.id
           td
-            a(href="assign/#{task.id}")= task.title
+            a(href="?user=ed&task_id=#{task.id}")= task.title
           td.text-right
             small= task.time
