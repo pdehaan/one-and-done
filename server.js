@@ -28,6 +28,7 @@ if (app.get('env') === 'development') {
 }
 
 app.get('/', routes.index);
+app.get('/tasks', routes.tasks);
 app.get('/leaderboard', routes.leaderboard);
 
 http.createServer(app).listen(app.get('port'), function () {

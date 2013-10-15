@@ -9,7 +9,7 @@ function renderIndex(res, params) {
   "use strict";
 
   params.title = "Mozilla One and Done";
-  res.render("index", params);
+  res.render("tasks", params);
 }
 
 function getTaskById(id, data) {
@@ -28,10 +28,14 @@ function getTaskById(id, data) {
 }
 
 
+exports.index = function (req, res) {
+  res.render("index", {"title": "Mozilla One and Done"});
+};
+
 /*
  * GET home page.
  */
-exports.index = function (req, res) {
+exports.tasks = function (req, res) {
   "use strict";
 
   var q = url.parse(req.url, true).query;
@@ -68,9 +72,11 @@ exports.index = function (req, res) {
       });
     } else {
       // TODO: big hack due to async issue
-      renderIndex(res, {"tasks": taskData,
-                        "user": user,
-                        "task_id": task_id});
+      renderIndex(res, {
+        "tasks": taskData,
+        "user": user,
+        "task_id": task_id
+      });
     }
   });
 };
@@ -83,8 +89,9 @@ exports.leaderboard = function (req, res) {
   users.once('value', function (snap) {
     var usersList = snap.val();
     console.log(usersList);
-    res.render("leaderboard",
-              {"users": usersList});
+    res.render("leaderboard", {
+      "users": usersList
+    });
   });
 };
 
