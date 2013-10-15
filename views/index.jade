@@ -9,7 +9,9 @@ block content
         th Task
         th.text-right Time
 
-    input(id='user_tf', type='text', value='#{user}')
+  form(name="input", action="", method="get")
+    | Username:
+    input(id='user', type='text', value='#{user}')
     if user && task_id
       p current task: #{task_id} #{task_title}
 

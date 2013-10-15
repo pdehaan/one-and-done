@@ -51,7 +51,7 @@ exports.index = function (req, res) {
           // returning user
           var newTotalTasks = userData.totalTasks+1;
           users.child(user).set({currentTask:task_id, 
-                                 totalTasks:newTotalTasks});
+                                             totalTasks:newTotalTasks});
         }
 
         var task = getTaskById(task_id, taskData);
@@ -72,6 +72,12 @@ exports.index = function (req, res) {
 
 exports.leaderboard = function (req, res) {
   "use strict";
-
+  var users = new Firebase(dbBaseUrl+'/users');
+  users.once('value', function(snap) {
+    var usersList = snap.val();
+    console.log(usersList);
+    res.render("leaderboard", 
+              {"users":usersList});
+  });
 };
 
