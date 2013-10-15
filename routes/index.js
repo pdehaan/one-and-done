@@ -7,7 +7,6 @@
 var Firebase = require('firebase'),
     fs = require("fs"),
     path = require("path"),
-    request = require('request'),
     url = require("url");
 
 var dbBaseUrl = "https://onedone-dev.firebaseIO.com";
