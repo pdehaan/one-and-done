@@ -40,7 +40,7 @@ exports.tasks = function (req, res) {
 
   var q = url.parse(req.url, true).query;
   var user = q.user || "";
-  var task_id = q.task_id || "";
+  var task_id = Number(q.task_id) || 0;
 
   //fetch all tasks
   var tasks = new Firebase(dbBaseUrl + '/tasks');
@@ -64,7 +64,6 @@ exports.tasks = function (req, res) {
         }
 
         var task = getTaskById(task_id, taskData);
-
         renderIndex(res, {"tasks": taskData,
                           "user": user,
                           "task_id": task_id,
