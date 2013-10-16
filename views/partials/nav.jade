@@ -1,0 +1,23 @@
+div.navbar.navbar-inverse.navbar-static-top
+  div.container
+    div.navbar-header
+      button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href="/") Mozilla One-and-Done
+    div.navbar-collapse.collapse
+      ul.nav.navbar-nav
+        li
+          a(href="/tasks") Tasks
+        li
+          a(href="/leaderboard") Leaderboard
+      ul.nav.navbar-nav.navbar-right
+        li
+          if user
+            a#logout(href='javascript:navigator.id.logout()') Logout
+          else
+            form(id="login-form", action="/auth", method="POST")
+              input#assertion-field(type="hidden", name="assertion", value="")
+              input(type="hidden", name="_csrf", value=csrf)
+            a#browserid(href='javascript:navigator.id.request()') Sign in

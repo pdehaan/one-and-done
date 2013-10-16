@@ -17,6 +17,7 @@
     "test": "grunt"
   },
   "dependencies": {
+    "browserid-verify": "~0.1.2",
     "express": "3.4.0",
     "firebase": "~0.6.3",
     "jade": "*"
