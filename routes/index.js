@@ -2,7 +2,7 @@
 
 var Firebase = require('firebase'),
     url = require("url"),
-    verify = require('browserid-verify');
+    verify = require('browserid-verify')({ type : 'remote' });
 
 var dbBaseUrl = "https://onedone-dev.firebaseIO.com";
 
@@ -111,8 +111,8 @@ exports.auth = function (audience) {
 
       // got a result, check if it was okay or not
       if (email) {
-        console.info('browserid auth successful, setting req.session.email');
-        req.session.email = email;
+        console.info('browserid auth successful, setting req.session.user');
+        req.session.user = email;
         return resp.redirect('/');
       }
 
