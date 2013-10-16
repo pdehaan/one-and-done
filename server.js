@@ -24,7 +24,13 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({'secret': 'What Does the Fox Say'}));
-app.use(express.csrf());
+// app.use(express.csrf());
+app.use(function(req, res, next) {
+    if ( req.session.user ) {
+        res.locals.user = req.session.user;
+    }
+    next();
+});
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
