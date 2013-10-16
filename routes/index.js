@@ -2,7 +2,7 @@
 
 var Firebase = require('firebase'),
     url = require("url"),
-    verify = require('browserid-verify');
+    verify = require('browserid-verify')({type: 'remote'});
 
 var dbBaseUrl = "https://onedone-dev.firebaseIO.com";
 
@@ -97,7 +97,7 @@ exports.leaderboard = function (req, res) {
 
 
 exports.auth = function (audience) {
-  return function (req, resp) {
+  return function (req, res) {
     console.info('verifying with persona');
 
     var assertion = req.body.assertion;
@@ -106,27 +106,30 @@ exports.auth = function (audience) {
       if (err) {
         // return JSON with a 500 saying something went wrong
         console.warn('request to verifier failed : ' + err);
-        return resp.send(500, { status : 'failure', reason : '' + err });
+        return res.send(200, {status: 'failure', reason: err.toString()});
       }
 
       // got a result, check if it was okay or not
       if (email) {
         console.info('browserid auth successful, setting req.session.email');
         req.session.email = email;
-        return resp.redirect('/');
+        return res.redirect('/');
       }
 
       // request worked, but verfication didn't, return JSON
-      console.error(data.reason);
-      resp.send(403, data);
+      if (!email) {
+        console.info("You there?");
+        req.session = null;
+        return res.json({"ok": false, "msg": res.reason});
+      }
     });
   };
 
 };
 
-exports.logout = function (req, resp) {
+exports.logout = function (req, res) {
   req.session.destroy();
-  resp.redirect('/');
+  res.redirect('/');
 };
 
 

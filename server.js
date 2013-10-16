@@ -30,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if (app.get('env') === 'development') {
+  console.log("Welcome, DEV!");
+  app.locals.pretty = true;
   app.use(express.errorHandler());
 }
 
