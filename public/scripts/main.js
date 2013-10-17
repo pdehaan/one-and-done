@@ -1,4 +1,6 @@
-window.onload = function () {
+/* globals loggedInUser:false */
+
+$(function () {
   navigator.id.watch({
     loggedInUser: loggedInUser,
     onlogin: function (assertion) {
@@ -11,9 +13,7 @@ window.onload = function () {
       window.location = '/logout';
     }
   });
-};
 
-$(function () {
   $("a#logout").click(function () {
     navigator.id.logout();
   });

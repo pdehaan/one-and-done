@@ -1,9 +1,11 @@
 {
   "boss": true,
+  "browser": true,
   "curly": true,
   "eqeqeq": true,
   "eqnull": true,
   "indent": 2,
+  "jquery": true,
   "maxlen": 100,
   "newcap": true,
   "node": true,

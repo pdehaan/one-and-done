@@ -1,13 +1,18 @@
 extends layout
 
-block jumbotron
+block content
   header.jumbotron
     div.container
-      h1 Mozilla One-and-Done
+      h1 Mozilla One and Done
+      div.pull-left.dino.ico
+        // RAWR!
+        span(style="color:#f00;") &#xe001;
+        span(style="color:#fff;") &#xe002;
+        span(style="color:#000;") &#xe003;
       p The "One and Done" initiative, previously known as "QA Taskboard", is a workflow where Mozilla community contributors can pick tasks and work on them - one at a time, one day at a time - and feel good about doing them.
 
+  div.row
+    div.col-xs-12.col-md-8
+      p.lead Mozilla QA sees the "One and Done" initiative as a way for Mozilla community contributors to get introduced to various projects and then to become involved in an area of their interest.
 
-block content
-  p.lead Mozilla QA sees the "One and Done" initiative as a way for Mozilla community contributors to get introduced to various projects and then to become involved in an area of their interest.
-
-  p Contributors would be able to find their voice in the community, be able to engage meaningfully, and feel rewarded for their contribution.
+      p Contributors would be able to find their voice in the community, be able to engage meaningfully, and feel rewarded for their contribution.

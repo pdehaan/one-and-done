@@ -1,6 +1,29 @@
-a {
-  color: #bada55;
+* {
+    font-family: 'Fira Sans' !important;
 }
-.heart {
+body {
+    padding-bottom: 100px;
+}
+
+.copy {
+    font-weight: 300;
+}
+.dino {
+    font-size: 2.2em;
+    padding-right: 10px;
+}
+.glyphicon {
+    font-family: 'Glyphicons Halflings' !important;
+}
+.ico {
+    padding: 0 0.5em;
+}
+.leaderboard-panel {
+    padding-top: 0;
+}
+.red {
   color: red;
+}
+.user {
+    font-weight: 700;
 }

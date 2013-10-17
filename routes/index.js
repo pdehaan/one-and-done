@@ -2,7 +2,7 @@
 
 var Firebase = require('firebase'),
     url = require("url"),
-    verify = require('browserid-verify')({ type : 'remote' });
+    verify = require('browserid-verify')({type : 'remote'});
 
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
@@ -51,6 +51,7 @@ exports.take = function (req, res) {
   if (user_id && task_id) {
     var epoch = parseInt(new Date().getTime() / 1000, 10);
     console.log('epoch: ' + epoch);
+    console.log('epoch2: %d', Date.now() / 1000);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (snap) {
       var newTotalTasks = snap.val().numTasksCompleted + 1;
@@ -62,11 +63,9 @@ exports.take = function (req, res) {
         "lastCompletedDate": epoch,
         "numTasksCompleted": newTotalTasks
       });
-
       res.redirect('/tasks');
     });
-
-  } 
+  }
 };
 
 /*

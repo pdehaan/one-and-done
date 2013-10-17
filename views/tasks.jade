@@ -17,7 +17,7 @@ block content
       - each task in tasks
         tr
           th= task.id
-          td: a(href="take?user_id=1&task_id=#{task.id}")= task.title
+          td: a(href="/take?user_id=1&task_id=#{task.id}")= task.title
           td.text-right: small= task.time
 
   //
