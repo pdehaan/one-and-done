@@ -4,7 +4,7 @@ var Firebase = require('firebase'),
     url = require("url"),
     verify = require('browserid-verify')({ type : 'remote' });
 
-var DB_BASE_URL = process.env.DB_BASE_URL || "https://onedone-dev.firebaseIO.com";
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
 function renderIndex(res, params) {
   "use strict";
@@ -13,94 +13,80 @@ function renderIndex(res, params) {
   res.render("tasks", params);
 }
 
-function getTaskById(id, data) {
-  "use strict";
-
-  var key,
-      prop;
-  //loop over taskData for the title
-  for (key in data) {
-    for (prop in data[key]) {
-      if (prop === "id" && data[key][prop] === id) {
-        return data[key];
-      }
-    }
-  }
-}
-
+/*
+ * GET home page.
+ */
 
 exports.index = function (req, res) {
   res.render("index", {"title": "Mozilla One and Done"});
 };
 
 /*
- * GET home page.
+ * GET Tasks page
  */
+
 exports.tasks = function (req, res) {
+  "use strict";
+
+  //fetch all tasks
+  var fb = new Firebase(DB_BASE_URL);
+  fb.child('tasks').once('value', function (snap) {
+        renderIndex(res, {"tasks": snap.val()});
+      });
+};
+
+/*
+ * GET Assign task to user
+ */
+
+exports.take = function (req, res) {
   "use strict";
 
   var q = url.parse(req.url, true).query;
   var user_id = q.user_id || "";
   var task_id = parseInt(q.task_id, 10) || 0;
+  var fb = new Firebase(DB_BASE_URL);
 
-  //fetch all tasks
-  var tasks = new Firebase(DB_BASE_URL + '/tasks');
-  tasks.once('value', function (snap) {
-    var taskData = snap.val();
-
-    // Take a task
-    if (user_id && task_id) {
-      var users = new Firebase(DB_BASE_URL + '/users');
-      users.child(user_id).once('value', function (snap) {
-        var userData = snap.val();
-        if (userData === null) {
-          // Add new user with data
-          users.child(user_id).update({
-            "currentTask": task_id,
-            "totalTasks": 1
-          });
-        } else {
-          // returning user
-          var newTotalTasks = userData.totalTasks + 1;
-          users.child(user_id).set({
-            "currentTask": task_id,
-            "totalTasks": newTotalTasks
-          });
-        }
-
-        var task = getTaskById(task_id, taskData);
-        renderIndex(res, {
-          "tasks": taskData,
-          "user_id": user_id,
-          "task_id": task_id,
-          "task_title": task.title
-        });
-      });
-    } else {
-      // TODO: big hack due to async issue
-      renderIndex(res, {
-        "tasks": taskData,
+  // User takes task, update db
+  if (user_id && task_id) {
+    var epoch = parseInt(new Date().getTime() / 1000, 10);
+    console.log('epoch: ' + epoch);
+    // Add new user with data
+    fb.child("users/" + user_id).once('value', function (snap) {
+      var newTotalTasks = snap.val().numTasksCompleted + 1;
+      fb.child("users/" + user_id).update({
         "user_id": user_id,
-        "task_id": task_id
+        "currentTaskId": task_id,
+        "currentTaskComplete": 0,
+        "currentTaskClaimedDate": epoch,
+        "lastCompletedDate": epoch,
+        "numTasksCompleted": newTotalTasks
       });
-    }
-  });
+
+      res.redirect('/tasks');
+    });
+
+  } 
 };
 
+/*
+ * GET Leaderboard
+ */
 
 exports.leaderboard = function (req, res) {
   "use strict";
 
-  var users = new Firebase(DB_BASE_URL + '/users');
-  users.once('value', function (snap) {
+  var fb = new Firebase(DB_BASE_URL);
+  fb.child('users').once('value', function (snap) {
     var usersList = snap.val();
     console.log(usersList);
-    res.render("leaderboard", {
-      "users": usersList
-    });
+    res.render("leaderboard", {"users": usersList });
   });
 };
 
+/*
+ * GET Persona Auth Magic
+ */
 
 exports.auth = function (audience) {
   return function (req, res) {
@@ -136,6 +122,10 @@ exports.auth = function (audience) {
     });
   };
 };
+
+/*
+ * GET Persona Auth Magic
+ */
 
 exports.logout = function (req, res) {
   req.session.destroy();
