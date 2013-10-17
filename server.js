@@ -11,7 +11,8 @@ var express = require('express');
 var routes = require('./routes');
 
 var PORT = process.env.PORT || 3000;
-var AUDIENCE = 'http://localhost:' + PORT;
+var HOST_URL = process.env.HOST_URL || "http://localhost";
+var AUDIENCE = HOST_URL + ':' + PORT;
 
 var app = express();
 // all environments
@@ -43,6 +44,7 @@ if (app.get('env') === 'development') {
 
 app.get('/', routes.index);
 app.get('/tasks', routes.tasks);
+app.get('/take', routes.take);
 app.get('/leaderboard', routes.leaderboard);
 app.get('/logout', routes.logout);
 app.post('/auth', routes.auth(AUDIENCE));

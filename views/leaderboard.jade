@@ -13,7 +13,7 @@ block content
         th.text-right Tasks Completed
 
     tbody
-      - each value, key in users
+      - each user in users
         tr
-          td #{key}
-          td.text-right #{value.totalTasks}
+          td #{user.displayName}
+          td.text-right #{user.numTasksCompleted}
