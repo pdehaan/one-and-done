@@ -13,11 +13,16 @@ div.navbar.navbar-inverse.navbar-static-top
         li
           a(href="/leaderboard") Leaderboard
       ul.nav.navbar-nav.navbar-right
-        li
           if user
-            a#logout(href='javascript:navigator.id.logout()') Logout
+            li
+              p.navbar-text Welcome 
+                strong= user
+            li
+              a#logout(href='#') Logout
           else
-            form(id="login-form", action="/auth", method="POST")
-              input#assertion-field(type="hidden", name="assertion", value="")
-              input(type="hidden", name="_csrf", value=csrf)
-            a#browserid(href='javascript:navigator.id.request()') Sign in
+            li
+              form#login-form(action="/auth", method="POST")
+                input#assertion-field(type="hidden", name="assertion", value="")
+                input(type="hidden", name="_csrf", value=csrf)
+            li
+              a#browserid(href='#') Sign in

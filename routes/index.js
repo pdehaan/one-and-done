@@ -40,8 +40,8 @@ exports.tasks = function (req, res) {
   "use strict";
 
   var q = url.parse(req.url, true).query;
-  var user = q.user || "";
-  var task_id = Number(q.task_id) || 0;
+  var user_id = q.user_id || "";
+  var task_id = parseInt(q.task_id, 10) || 0;
 
   //fetch all tasks
   var tasks = new Firebase(dbBaseUrl + '/tasks');
@@ -49,32 +49,38 @@ exports.tasks = function (req, res) {
     var taskData = snap.val();
 
     // Take a task
-    if (user && task_id) {
+    if (user_id && task_id) {
       var users = new Firebase(dbBaseUrl + '/users');
-      users.child(user).once('value', function (snap) {
+      users.child(user_id).once('value', function (snap) {
         var userData = snap.val();
         if (userData === null) {
           // Add new user with data
-          users.child(user).update({"currentTask": task_id,
-                                    "totalTasks": 1});
+          users.child(user_id).update({
+            "currentTask": task_id,
+            "totalTasks": 1
+          });
         } else {
           // returning user
           var newTotalTasks = userData.totalTasks + 1;
-          users.child(user).set({"currentTask": task_id,
-                                 "totalTasks": newTotalTasks});
+          users.child(user_id).set({
+            "currentTask": task_id,
+            "totalTasks": newTotalTasks
+          });
         }
 
         var task = getTaskById(task_id, taskData);
-        renderIndex(res, {"tasks": taskData,
-                          "user": user,
-                          "task_id": task_id,
-                          "task_title": task.title});
+        renderIndex(res, {
+          "tasks": taskData,
+          "user_id": user_id,
+          "task_id": task_id,
+          "task_title": task.title
+        });
       });
     } else {
       // TODO: big hack due to async issue
       renderIndex(res, {
         "tasks": taskData,
-        "user": user,
+        "user_id": user_id,
         "task_id": task_id
       });
     }
@@ -106,7 +112,10 @@ exports.auth = function (audience) {
       if (err) {
         // return JSON with a 500 saying something went wrong
         console.warn('request to verifier failed : ' + err);
-        return res.send(200, {status: 'failure', reason: err.toString()});
+        return res.send(200, {
+          "status": "failure",
+          "reason": err.toString()
+        });
       }
 
       // got a result, check if it was okay or not
@@ -118,13 +127,14 @@ exports.auth = function (audience) {
 
       // request worked, but verfication didn't, return JSON
       if (!email) {
-        console.info("You there?");
         req.session = null;
-        return res.json({"ok": false, "msg": res.reason});
+        return res.json({
+          "ok": false,
+          "msg": res.reason
+        });
       }
     });
   };
-
 };
 
 exports.logout = function (req, res) {

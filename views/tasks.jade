@@ -2,18 +2,11 @@ extends layout
 
 block content
 
-  h2 Tasks
+  header.page-header
+    h1 Tasks&nbsp;
+      small: span.glyphicon.glyphicon-tasks
 
-  form.form-inline(name="input", action="", method="GET", role="form")
-    div.form-group
-      label.sr-only(for="user")
-        p User name
-      input#user.form-control(type="text", placeholder="User name", value="#{user}")
-
-      if user && task_id
-        p current task: #{task_id} #{task_title}
-
-  table.table.table-hover.table-condensed.table-responsive
+  table.table.table-hover.table-condensed.table-responsive.table-bordered
     thead
       tr
         th #
@@ -24,7 +17,14 @@ block content
       - each task in tasks
         tr
           th= task.id
-          td
-            a(href="?user=ed&task_id=#{task.id}")= task.title
-          td.text-right
-            small= task.time
+          td: a(href="?user_id=ed&task_id=#{task.id}")= task.title
+          td.text-right: small= task.time
+
+  //
+    form.form-inline(name="input", action="", method="GET", role="form")
+      div.form-group
+        label.sr-only(for="user_id"): p User name
+        input#user_id.form-control(type="text", placeholder="User name", value="#{user_id}")
+
+        if user_id && task_id
+          p current task: #{task_id} #{task_title}
