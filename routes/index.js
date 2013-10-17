@@ -4,7 +4,7 @@ var Firebase = require('firebase'),
     url = require("url"),
     verify = require('browserid-verify')({ type : 'remote' });
 
-var dbBaseUrl = "https://onedone-dev.firebaseIO.com";
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://onedone-dev.firebaseIO.com";
 
 function renderIndex(res, params) {
   "use strict";
@@ -17,7 +17,7 @@ function getTaskById(id, data) {
   "use strict";
 
   var key,
-    prop;
+      prop;
   //loop over taskData for the title
   for (key in data) {
     for (prop in data[key]) {
@@ -44,13 +44,13 @@ exports.tasks = function (req, res) {
   var task_id = parseInt(q.task_id, 10) || 0;
 
   //fetch all tasks
-  var tasks = new Firebase(dbBaseUrl + '/tasks');
+  var tasks = new Firebase(DB_BASE_URL + '/tasks');
   tasks.once('value', function (snap) {
     var taskData = snap.val();
 
     // Take a task
     if (user_id && task_id) {
-      var users = new Firebase(dbBaseUrl + '/users');
+      var users = new Firebase(DB_BASE_URL + '/users');
       users.child(user_id).once('value', function (snap) {
         var userData = snap.val();
         if (userData === null) {
@@ -91,7 +91,7 @@ exports.tasks = function (req, res) {
 exports.leaderboard = function (req, res) {
   "use strict";
 
-  var users = new Firebase(dbBaseUrl + '/users');
+  var users = new Firebase(DB_BASE_URL + '/users');
   users.once('value', function (snap) {
     var usersList = snap.val();
     console.log(usersList);
