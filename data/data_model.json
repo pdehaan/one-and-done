@@ -9,7 +9,7 @@
             "currentTaskComplete": 1,
             "currentTaskClaimedDate": 1381884124,
             "lastCompletedDate": 1381884124,
-            "numTasksCompleted": 5
+            "completed_tasks" : [ 3, 1 ]
         },
         "joe@joe,com": {
             "displayName": "joe",
@@ -20,7 +20,7 @@
             "currentTaskComplete": 0,
             "currentTaskClaimedDate": 1381884124,
             "lastCompletedDate": 1381884124,
-            "numTasksCompleted": 5
+            "completed_tasks" : [ 0, 1 ]
         }
     },
     "tasks": [{
