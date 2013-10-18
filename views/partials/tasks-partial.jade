@@ -1,0 +1,26 @@
+header.page-header
+  h1 Tasks
+    small: span.glyphicon.glyphicon-tasks.ico.green
+
+table.table.table-hover.table-responsive
+  thead
+    tr
+      th #
+      th Task
+      th.text-right Time
+
+  tbody
+    - each task in tasks
+      tr
+        th= task.id
+        td: a(href="/take?user_id=1&task_id=#{task.id}")= task.title
+        td.text-right: small= task.time
+
+  //
+    form.form-inline(name="input", action="", method="GET", role="form")
+      div.form-group
+        label.sr-only(for="user_id"): p User name
+        input#user_id.form-control(type="text", placeholder="User name", value="#{user_id}")
+
+        if user_id && task_id
+          p current task: #{task_id} #{task_title}

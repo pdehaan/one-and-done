@@ -16,9 +16,9 @@ div.navbar.navbar-inverse.navbar-static-top
           if user
             li
               p.navbar-text Welcome 
-                strong= user
+                span.user= user.split("@")[0]
             li
-              a#logout(href='#') Logout
+              a#logout.text-primary(href='/logout'): u Logout
           else
             li
               form#login-form(action="/auth", method="POST")

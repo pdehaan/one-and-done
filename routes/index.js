@@ -5,14 +5,7 @@ var Firebase = require('firebase'),
     verify = require('browserid-verify')({type : 'remote'});
 
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
-
-
-function renderIndex(res, params) {
-  "use strict";
-
-  params.title = "Mozilla One and Done";
-  res.render("tasks", params);
-}
+var DEF_TITLE = "Mozilla One and Done";
 
 
 function getLeaderboard(cb) {
@@ -21,6 +14,8 @@ function getLeaderboard(cb) {
   var fb = new Firebase(DB_BASE_URL);
   fb.child('users').once('value', function (snap) {
     var usersList = snap.val();
+
+    console.log(JSON.stringify(usersList, null, 2));
     cb(usersList);
   });
 }
@@ -35,7 +30,7 @@ exports.index = function (req, res) {
 
   getLeaderboard(function (usersList) {
     res.render("index", {
-      "title": "Mozilla One and Done",
+      "title": DEF_TITLE + " > Home",
       "users": usersList
     });
   });
@@ -51,7 +46,10 @@ exports.tasks = function (req, res) {
   //fetch all tasks
   var fb = new Firebase(DB_BASE_URL);
   fb.child('tasks').once('value', function (snap) {
-    renderIndex(res, {"tasks": snap.val()});
+    res.render("tasks", {
+      "title": DEF_TITLE + " > Tasks",
+      "tasks": snap.val()
+    });
   });
 };
 
@@ -61,6 +59,9 @@ exports.tasks = function (req, res) {
 
 exports.take = function (req, res) {
   "use strict";
+
+  console.log("Are you %s?", req.session.user);
+
 
   var q = url.parse(req.url, true).query;
   var user_id = q.user_id || "";
@@ -74,7 +75,7 @@ exports.take = function (req, res) {
     console.log('epoch2: %d', Date.now() / 1000);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (snap) {
-      var newTotalTasks = snap.val().numTasksCompleted + 1;
+      var newTotalTasks = (snap.val().numTasksCompleted || 0) + 1;
       fb.child("users/" + user_id).update({
         "user_id": user_id,
         "currentTaskId": task_id,
@@ -84,6 +85,12 @@ exports.take = function (req, res) {
         "numTasksCompleted": newTotalTasks
       });
       res.redirect('/tasks');
+    });
+  } else {
+    res.json({
+      "status": "fail",
+      "user_id": user_id,
+      "task_id": task_id
     });
   }
 };
@@ -98,6 +105,7 @@ exports.leaderboard = function (req, res) {
 
   getLeaderboard(function (usersList) {
     res.render("leaderboard", {
+      "title": DEF_TITLE + " > Leaderboard",
       "users": usersList
     });
   });
@@ -129,7 +137,7 @@ exports.auth = function (audience) {
       if (email) {
         console.info('browserid auth successful, setting req.session.user');
         req.session.user = email;
-        return res.redirect('/');
+        return res.redirect('/user/check');
       }
 
       // request worked, but verfication didn't, return JSON
@@ -142,6 +150,11 @@ exports.auth = function (audience) {
       }
     });
   };
+};
+
+exports.userCheck = function (req, res) {
+  console.log("gotcha! Your username is %s", req.session.user);
+  res.redirect("/");
 };
 
 
