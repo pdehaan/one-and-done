@@ -1,0 +1,15 @@
+header.page-header
+  h1 Leaderboard
+    small: span.glyphicon.glyphicon-fire.ico.red
+
+table.table.table-hover.table-condensed.table-responsive.table-bordered
+  thead
+    tr
+      th User
+      th.text-right Tasks Completed
+
+  tbody
+    - each user in users
+      tr
+        td #{user.displayName}
+        td.text-right #{user.numTasksCompleted}

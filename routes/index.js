@@ -6,6 +6,7 @@ var Firebase = require('firebase'),
 
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
+
 function renderIndex(res, params) {
   "use strict";
 
@@ -13,12 +14,31 @@ function renderIndex(res, params) {
   res.render("tasks", params);
 }
 
+
+function getLeaderboard(cb) {
+  "use strict";
+
+  var fb = new Firebase(DB_BASE_URL);
+  fb.child('users').once('value', function (snap) {
+    var usersList = snap.val();
+    cb(usersList);
+  });
+}
+
+
 /*
  * GET home page.
  */
 
 exports.index = function (req, res) {
-  res.render("index", {"title": "Mozilla One and Done"});
+  "use strict";
+
+  getLeaderboard(function (usersList) {
+    res.render("index", {
+      "title": "Mozilla One and Done",
+      "users": usersList
+    });
+  });
 };
 
 /*
@@ -31,8 +51,8 @@ exports.tasks = function (req, res) {
   //fetch all tasks
   var fb = new Firebase(DB_BASE_URL);
   fb.child('tasks').once('value', function (snap) {
-        renderIndex(res, {"tasks": snap.val()});
-      });
+    renderIndex(res, {"tasks": snap.val()});
+  });
 };
 
 /*
@@ -68,6 +88,7 @@ exports.take = function (req, res) {
   }
 };
 
+
 /*
  * GET Leaderboard
  */
@@ -75,11 +96,10 @@ exports.take = function (req, res) {
 exports.leaderboard = function (req, res) {
   "use strict";
 
-  var fb = new Firebase(DB_BASE_URL);
-  fb.child('users').once('value', function (snap) {
-    var usersList = snap.val();
-    console.log(usersList);
-    res.render("leaderboard", {"users": usersList });
+  getLeaderboard(function (usersList) {
+    res.render("leaderboard", {
+      "users": usersList
+    });
   });
 };
 
@@ -88,6 +108,8 @@ exports.leaderboard = function (req, res) {
  */
 
 exports.auth = function (audience) {
+  "use strict";
+
   return function (req, res) {
     console.info('verifying with persona');
 
@@ -122,11 +144,14 @@ exports.auth = function (audience) {
   };
 };
 
+
 /*
  * GET Persona Auth Magic
  */
 
 exports.logout = function (req, res) {
+  "use strict";
+
   req.session.destroy();
   res.redirect('/');
 };
