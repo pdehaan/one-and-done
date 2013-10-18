@@ -48,7 +48,7 @@ app.get('/take', routes.take);
 app.get('/leaderboard', routes.leaderboard);
 app.get('/logout', routes.logout);
 app.post('/auth', routes.auth(AUDIENCE));
-app.get('/user/check', routes.userCheck);
+app.get('/user/check', routes.usercheck);
 
 http.createServer(app).listen(app.get('port'), function () {
   "use strict";

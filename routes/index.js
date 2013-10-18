@@ -8,6 +8,18 @@ var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com"
 var DEF_TITLE = "Mozilla One and Done";
 
 
+function escapeEmailAddress(email) {
+  if (!email) {
+    return false;
+  }
+
+  // Replace '.' (not allowed in a Firebase key) with ','
+  email = email.toLowerCase().replace(/\./g, ',');
+  return email;
+}
+
+
+
 function getLeaderboard(cb) {
   "use strict";
 
@@ -24,7 +36,6 @@ function getLeaderboard(cb) {
 /*
  * GET home page.
  */
-
 exports.index = function (req, res) {
   "use strict";
 
@@ -36,10 +47,10 @@ exports.index = function (req, res) {
   });
 };
 
+
 /*
  * GET Tasks page
  */
-
 exports.tasks = function (req, res) {
   "use strict";
 
@@ -53,10 +64,10 @@ exports.tasks = function (req, res) {
   });
 };
 
+
 /*
  * GET Assign task to user
  */
-
 exports.take = function (req, res) {
   "use strict";
 
@@ -64,7 +75,7 @@ exports.take = function (req, res) {
 
 
   var q = url.parse(req.url, true).query;
-  var user_id = q.user_id || "";
+  var user_id = req.session.user || "";
   var task_id = parseInt(q.task_id, 10) || 0;
   var fb = new Firebase(DB_BASE_URL);
 
@@ -99,7 +110,6 @@ exports.take = function (req, res) {
 /*
  * GET Leaderboard
  */
-
 exports.leaderboard = function (req, res) {
   "use strict";
 
@@ -111,17 +121,17 @@ exports.leaderboard = function (req, res) {
   });
 };
 
+
 /*
  * GET Persona Auth Magic
  */
-
 exports.auth = function (audience) {
   "use strict";
 
   return function (req, res) {
-    console.info('verifying with persona');
-
     var assertion = req.body.assertion;
+
+    console.info('verifying with persona');
 
     verify(assertion, audience, function (err, email, data) {
       if (err) {
@@ -152,16 +162,32 @@ exports.auth = function (audience) {
   };
 };
 
-exports.userCheck = function (req, res) {
+
+/**
+ * GET userCheck
+ */
+exports.usercheck = function (req, res) {
+  "use strict";
+
+  var fb = new Firebase(DB_BASE_URL + "/users/peter");
+  var user = fb.child('jane@jane,com');
+  console.log(">>>");
+  console.log(user);
+
   console.log("gotcha! Your username is %s", req.session.user);
-  res.redirect("/");
+  res.render("usercheck", {
+    "title": DEF_TITLE + " > Create Profile"
+  });
+
+
+
+  // res.redirect("/");
 };
 
 
 /*
  * GET Persona Auth Magic
  */
-
 exports.logout = function (req, res) {
   "use strict";
 

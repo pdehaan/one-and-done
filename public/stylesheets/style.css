@@ -31,3 +31,10 @@ body {
 .user {
   font-weight: 700;
 }
+
+/*
+.leaderboard-table tbody tr:first-child td {
+  color: green;
+  font-weight: bold;
+}
+*/

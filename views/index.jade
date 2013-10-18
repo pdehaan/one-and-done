@@ -36,3 +36,7 @@ block content
     div.col-xs-12.col-md-4
       div.well
         include partials/leaderboard-partial
+
+block inlinescript
+  script.
+    $('.leaderboard-table tbody tr:first-child').addClass("success").children("td").addClass("text-success");
