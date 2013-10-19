@@ -1,5 +1,15 @@
 extends layout
 
 block content
-  p Hey son, what's YOUR name?
-  p= user
+  h1 Welcome, #{user}!
+
+  p.lead Thank you for joining the Mozilla One and Done site and helping improve the Mozilla community.
+
+  p Before we can get started, please enter your name below:
+
+  form(action="/user/create", method="POST", role="form")
+    div.form-group
+      label(for="username") User name:
+        input.form-control#username(type="text", name="username", placeholder="User name", required="required")
+    button.btn.btn-primary.btn-lg(type="submit") Get started!
+      span.glyphicon.glyphicon-hand-right.ico

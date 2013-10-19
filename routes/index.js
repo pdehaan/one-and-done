@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var Firebase = require('firebase'),
-    url = require("url"),
     verify = require('browserid-verify')({type : 'remote'});
 
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
@@ -71,21 +70,20 @@ exports.tasks = function (req, res) {
 exports.take = function (req, res) {
   "use strict";
 
-  console.log("Are you %s?", req.session.user);
-
-
-  var q = url.parse(req.url, true).query;
-  var user_id = req.session.user || "";
-  var task_id = parseInt(q.task_id, 10) || 0;
+  var user_id = escapeEmailAddress(req.session.user) || "";
+  var task_id = parseInt(req.params.task_id, 10) || 0;
   var fb = new Firebase(DB_BASE_URL);
+
+  console.log("user_id: %s; task_id: %s", user_id, task_id);
+  console.log("Are you %s?", req.session.user);
 
   // User takes task, update db
   if (user_id && task_id) {
-    var epoch = parseInt(new Date().getTime() / 1000, 10);
+    var epoch = Math.round(Date.now() / 1000);
     console.log('epoch: ' + epoch);
-    console.log('epoch2: %d', Date.now() / 1000);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (snap) {
+      console.log(snap.val());
       var newTotalTasks = (snap.val().numTasksCompleted || 0) + 1;
       fb.child("users/" + user_id).update({
         "user_id": user_id,
@@ -134,6 +132,7 @@ exports.auth = function (audience) {
     console.info('verifying with persona');
 
     verify(assertion, audience, function (err, email, data) {
+      console.log(data);
       if (err) {
         // return JSON with a 500 saying something went wrong
         console.warn('request to verifier failed : ' + err);
@@ -166,23 +165,56 @@ exports.auth = function (audience) {
 /**
  * GET userCheck
  */
-exports.usercheck = function (req, res) {
+exports.userCheck = function (req, res) {
   "use strict";
 
-  var fb = new Firebase(DB_BASE_URL + "/users/peter");
-  var user = fb.child('jane@jane,com');
-  console.log(">>>");
-  console.log(user);
+  var user_id = escapeEmailAddress(req.session.user);
+  var fb = new Firebase(DB_BASE_URL + "/users");
+  fb.child(user_id).once('value', function (snap) {
+    var user = snap.val();
+    if (!user) {
+      // We dont know this user, show them the registration form.
+      res.render("usercheck", {
+        "title": DEF_TITLE + " > Create Profile"
+      });
+    } else {
+      // They're cool, let them in.
+      res.redirect("/tasks");
+    }
+  });
+};
 
-  console.log("gotcha! Your username is %s", req.session.user);
-  res.render("usercheck", {
-    "title": DEF_TITLE + " > Create Profile"
+exports.userCreate = function (req, res) {
+  console.log("params: %j", req.params);
+  console.log("body: %j", req.body);
+
+  var user_id = escapeEmailAddress(req.session.user);
+  var user_name = req.body.username.trim();
+  var fb = new Firebase(DB_BASE_URL + "/users");
+
+  console.log("user_id: %s; user_name: %s", user_id, user_name);
+  fb.child(user_id).update({
+    "displayName": user_name,
+    "email": req.session.user,
+    "createdOnDate": Date.now(),
+    "numTasksCompleted": 0
   });
 
-
-
-  // res.redirect("/");
+  res.redirect("/");
 };
+
+
+        // "joe@joe,com": {
+        //     "displayName": "joe",
+        //     "email": "joe@joe.com",
+        //     "createdOnDate": 1381884124,
+        //     "lastLoginDate": 1381884124,
+        //     "currentTaskId": 1,
+        //     "currentTaskComplete": 0,
+        //     "currentTaskClaimedDate": 1381884124,
+        //     "lastCompletedDate": 1381884124,
+        //     "numTasksCompleted": 5
+        // }
 
 
 /*
