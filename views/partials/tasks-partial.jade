@@ -1,6 +1,6 @@
 header.page-header
   h1 Tasks
-    small: span.glyphicon.glyphicon-tasks.ico.green
+    small: span.glyphicon.glyphicon-ok.ico.green
 
 table.table.table-hover.table-responsive.tasks-table
   thead
@@ -10,9 +10,9 @@ table.table.table-hover.table-responsive.tasks-table
       th.text-right Time
 
   tbody
-    - each task in tasks
+    - each task, index in tasks
       tr
-        th= task.id
+        th= index+1
         td: a(href="/task/take/#{task.id}")= task.title
         td.text-right: small= task.time
 

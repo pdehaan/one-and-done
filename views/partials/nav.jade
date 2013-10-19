@@ -13,12 +13,14 @@ div.navbar.navbar-inverse.navbar-static-top
         li
           a(href="/leaderboard") Leaderboard
 
+      div= "an-${activeNav}"
+
       div.navbar-right
         if user
-          form.navbar-form
+          div.navbar-text Welcome&nbsp;
+            span.user= user.split('@')[0]
+          form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
-              p.navbar-text Welcome&nbsp;
-                span.user= user.split('@')[0]
               button#logout.btn.btn-danger(type="submit") Sign out
         else
           form.navbar-form#login-form(action="/auth", method="POST")
