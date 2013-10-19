@@ -1,64 +1,64 @@
 {
-    "users": {
-        "jane@jane,com": {
-            "displayName": "jane",
-            "email": "jane@jane.com",
-            "createdOnDate": 1381884124,
-            "lastLoginDate": 1381884124,
-            "currentTaskId": 1,
-            "currentTaskComplete": 1,
-            "currentTaskClaimedDate": 1381884124,
-            "lastCompletedDate": 1381884124,
-            "completed_tasks" : [ 3, 1 ]
-        },
-        "joe@joe,com": {
-            "displayName": "joe",
-            "email": "joe@joe.com",
-            "createdOnDate": 1381884124,
-            "lastLoginDate": 1381884124,
-            "currentTaskId": 1,
-            "currentTaskComplete": 0,
-            "currentTaskClaimedDate": 1381884124,
-            "lastCompletedDate": 1381884124,
-            "completed_tasks" : [ 0, 1 ]
-        }
+  "users" : {
+    "edwong@mozilla,com" : {
+      "displayName" : "edwong",
+      "lastCompletedDate" : 1381884124,
+      "lastLoginDate" : 1381884124,
+      "createdOnDate" : 1381884124,
+      "completed_tasks" : [ 0, 1 ],
+      "currentTaskComplete" : 0,
+      "currentTaskClaimedDate" : 1381884124,
+      "email" : "edwong@mozilla,com",
+      "currentTaskId" : 1
     },
-    "tasks": [{
-        "id": 1,
-        "title": "Do something",
-        "time": "5m",
-        "order": 1,
-        "type": 1
-    }, {
-        "id": 2,
-        "title": "Do more stuff and thingz",
-        "time": "15m",
-        "order": 2,
-        "type": 1
-    }, {
-        "id": 3,
-        "title": "Log in to persona with a nightly build on B2G",
-        "time": "5m",
-        "order": 3,
-        "type": 2
-    }],
-    "completed_tasks": [{
-        "user_id": 1,
-        "task_id": 2,
-        "pending": 0,
-        "startTaskTime": 1381884124,
-        "completedTaskTime": 1381884324
-    }, {
-        "user_id": 1,
-        "task_id": 2,
-        "pending": 1,
-        "startTaskTime": 1381884124,
-        "completedTaskTime": 1381884324
-    }, {
-        "user_id": 0,
-        "task_id": 2,
-        "pending": 0,
-        "startTaskTime": 1381884124,
-        "completedTaskTime": 1381884324
-    }]
+    "pdehaan@mozilla,com" : {
+      "displayName" : "peter",
+      "lastCompletedDate" : 1381884124,
+      "lastLoginDate" : 1381884124,
+      "createdOnDate" : 1381884124,
+      "completed_tasks" : [ 0, 1 ],
+      "currentTaskComplete" : 0,
+      "currentTaskClaimedDate" : 1381884124,
+      "email" : "pdehaan@mozilla.com",
+      "currentTaskId" : 1
+    }
+  },
+  "completed_tasks" : [ {
+    "pending" : 0,
+    "task_id" : 2,
+    "completedTaskTime" : 1381884324,
+    "startTaskTime" : 1381884124,
+    "user_id" : 1
+  }, {
+    "pending" : 1,
+    "task_id" : 2,
+    "completedTaskTime" : 1381884324,
+    "startTaskTime" : 1381884124,
+    "user_id" : 1
+  }, {
+    "pending" : 0,
+    "task_id" : 2,
+    "completedTaskTime" : 1381884324,
+    "startTaskTime" : 1381884124,
+    "user_id" : 0
+  } ],
+  "tasks" : [ {
+    "type" : 1,
+    "order" : 1,
+    "title" : "Do something",
+    "time" : "5m",
+    "id" : 1
+  }, {
+    "type" : 1,
+    "order" : 2,
+    "title" : "Do more stuff and thingz",
+    "time" : "15m",
+    "id" : 2
+  }, {
+    "type" : 2,
+    "order" : 3,
+    "title" : "Log in to persona with a nightly build on B2G",
+    "time" : "5m",
+    "id" : 3
+  } ]
 }
