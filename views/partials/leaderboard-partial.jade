@@ -12,7 +12,7 @@ table.table.table-striped.table-condensed.table-responsive.leaderboard-table
     - each user in users
       tr
         td #{user.displayName}
-        td.text-right #{user.numTasksCompleted}
+        td.text-right #{user.completed_tasks.length}
 
   tfoot
     tr
