@@ -14,7 +14,7 @@ $(function () {
     }
   });
 
-  $("a#logout").click(function () {
+  $("button#logout").click(function () {
     navigator.id.logout();
   });
   $("a#browserid").click(function () {

@@ -74,9 +74,6 @@ exports.take = function (req, res) {
   var task_id = parseInt(req.params.task_id, 10) || 0;
   var fb = new Firebase(DB_BASE_URL);
 
-  console.log("user_id: %s; task_id: %s", user_id, task_id);
-  console.log("Are you %s?", req.session.user);
-
   // User takes task, update db
   if (user_id && task_id) {
     var epoch = Math.round(Date.now() / 1000);
@@ -175,7 +172,8 @@ exports.userCheck = function (req, res) {
     if (!user) {
       // We dont know this user, show them the registration form.
       res.render("usercheck", {
-        "title": DEF_TITLE + " > Create Profile"
+        "title": DEF_TITLE + " > Create Profile",
+        "username": user_id.split("@")[0]
       });
     } else {
       // They're cool, let them in.
@@ -184,37 +182,26 @@ exports.userCheck = function (req, res) {
   });
 };
 
-exports.userCreate = function (req, res) {
-  console.log("params: %j", req.params);
-  console.log("body: %j", req.body);
 
+/*
+ * POST userCreate
+ */
+exports.userCreate = function (req, res) {
   var user_id = escapeEmailAddress(req.session.user);
   var user_name = req.body.username.trim();
   var fb = new Firebase(DB_BASE_URL + "/users");
-
-  console.log("user_id: %s; user_name: %s", user_id, user_name);
   fb.child(user_id).update({
     "displayName": user_name,
     "email": req.session.user,
     "createdOnDate": Date.now(),
-    "numTasksCompleted": 0
+    "completed_tasks": [],
+    "currentTaskClaimedDate": 0,
+    "lastCompletedDate": 0,
+    "lastLoginDate": Date.now()
   });
-
-  res.redirect("/");
+  req.session.username = user_name;
+  res.redirect("/tasks");
 };
-
-
-        // "joe@joe,com": {
-        //     "displayName": "joe",
-        //     "email": "joe@joe.com",
-        //     "createdOnDate": 1381884124,
-        //     "lastLoginDate": 1381884124,
-        //     "currentTaskId": 1,
-        //     "currentTaskComplete": 0,
-        //     "currentTaskClaimedDate": 1381884124,
-        //     "lastCompletedDate": 1381884124,
-        //     "numTasksCompleted": 5
-        // }
 
 
 /*

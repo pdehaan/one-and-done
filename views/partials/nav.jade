@@ -12,17 +12,16 @@ div.navbar.navbar-inverse.navbar-static-top
           a(href="/tasks") Tasks
         li
           a(href="/leaderboard") Leaderboard
-      ul.nav.navbar-nav.navbar-right
-          if user
-            li
-              p.navbar-text Welcome 
-                span.user= user.split("@")[0]
-            li
-              a#logout.text-primary(href='/logout'): u Logout
-          else
-            li
-              form#login-form(action="/auth", method="POST")
-                input#assertion-field(type="hidden", name="assertion", value="")
-                input(type="hidden", name="_csrf", value=csrf)
-            li
-              a#browserid(href='#') Sign in
+
+      div.navbar-right
+        if user
+          form.navbar-form
+            div.form-group
+              p.navbar-text Welcome&nbsp;
+                span.user= user.split('@')[0]
+              button#logout.btn.btn-danger(type="submit") Sign out
+        else
+          form.navbar-form#login-form(action="/auth", method="POST")
+            input#assertion-field(type="hidden", name="assertion", value="")
+            input(type="hidden", name="_csrf", value=csrf)
+            button#browserid.btn.btn-success(href='#') Sign in
