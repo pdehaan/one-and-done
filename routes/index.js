@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 var Firebase = require('firebase'),
-    url = require("url"),
-    verify = require('browserid-verify')({type : 'remote'});
-
+    url = require("url");
+ 
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
+var fb = new Firebase(DB_BASE_URL);
 
 function renderIndex(res, params) {
   "use strict";
@@ -18,7 +18,8 @@ function renderIndex(res, params) {
  */
 
 exports.index = function (req, res) {
-  res.render("index", {"title": "Mozilla One and Done"});
+  res.render("index", {"title": "Mozilla One and Done",
+                       "db_base_url": DB_BASE_URL});
 };
 
 /*
@@ -87,46 +88,25 @@ exports.leaderboard = function (req, res) {
  * GET Persona Auth Magic
  */
 
-exports.auth = function (audience) {
-  return function (req, res) {
-    console.info('verifying with persona');
-
-    var assertion = req.body.assertion;
-
-    verify(assertion, audience, function (err, email, data) {
-      if (err) {
-        // return JSON with a 500 saying something went wrong
-        console.warn('request to verifier failed : ' + err);
-        return res.send(200, {
-          "status": "failure",
-          "reason": err.toString()
-        });
-      }
-
-      // got a result, check if it was okay or not
-      if (email) {
-        console.info('browserid auth successful, setting req.session.user');
-        req.session.user = email;
-        return res.redirect('/');
-      }
-
-      // request worked, but verfication didn't, return JSON
-      if (!email) {
-        req.session = null;
-        return res.json({
-          "ok": false,
-          "msg": res.reason
-        });
-      }
-    });
+exports.auth = function (req, res) {
+  "use strict";
+  var auth = { token: req.body._authToken,
+               id:    req.body._id, 
+               email: req.body._email, 
+               md5_hash: req.body._md5_hash
   };
+  if (auth.token && auth.id &&
+        auth.email && auth.md5_hash) {
+    console.log("setting req.session.user / auth");
+    req.session.auth = auth;
+    req.session.user = auth.email;
+  }
+  res.redirect('/');
 };
 
-/*
- * GET Persona Auth Magic
- */
-
 exports.logout = function (req, res) {
+  var fb = new Firebase(DB_BASE_URL);
+  fb.unauth();
   req.session.destroy();
   res.redirect('/');
 };
