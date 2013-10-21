@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
   if (req.session.user) {
     res.locals.user = req.session.user;
   }
+  res.locals.db_base_url = DB_BASE_URL;
   next();
 });
 app.use(app.router);

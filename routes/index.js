@@ -41,7 +41,6 @@ exports.index = function (req, res) {
     res.render("index", {
       "title": DEF_TITLE + " > Home",
       "users": usersList, 
-      "db_base_url": DB_BASE_URL
     });
   });
 };
