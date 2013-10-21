@@ -8,13 +8,14 @@ var DEF_TITLE = "Mozilla One and Done";
 
 
 function escapeEmailAddress(email) {
+  "use strict";
+
   if (!email) {
     return false;
   }
 
   // Replace '.' (not allowed in a Firebase key) with ','
-  email = email.toLowerCase().replace(/\./g, ',');
-  return email;
+  return email.toLowerCase().replace(/\./g, ',');
 }
 
 
@@ -25,8 +26,6 @@ function getLeaderboard(cb) {
   var fb = new Firebase(DB_BASE_URL);
   fb.child('users').once('value', function (snap) {
     var usersList = snap.val();
-
-    console.log(JSON.stringify(usersList, null, 2));
     cb(usersList);
   });
 }
@@ -41,7 +40,8 @@ exports.index = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("index", {
       "title": DEF_TITLE + " > Home",
-      "users": usersList
+      "users": usersList,
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
@@ -58,7 +58,8 @@ exports.tasks = function (req, res) {
   fb.child('tasks').once('value', function (snap) {
     res.render("tasks", {
       "title": DEF_TITLE + " > Tasks",
-      "tasks": snap.val()
+      "tasks": snap.val(),
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
@@ -80,7 +81,6 @@ exports.take = function (req, res) {
     console.log('epoch: ' + epoch);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (snap) {
-      console.log(snap.val());
       var newTotalTasks = (snap.val().numTasksCompleted || 0) + 1;
       fb.child("users/" + user_id).update({
         "user_id": user_id,
@@ -111,7 +111,8 @@ exports.leaderboard = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("leaderboard", {
       "title": DEF_TITLE + " > Leaderboard",
-      "users": usersList
+      "users": usersList,
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
@@ -177,6 +178,7 @@ exports.userCheck = function (req, res) {
       });
     } else {
       // They're cool, let them in.
+      req.session.username = user.displayName;
       res.redirect("/tasks");
     }
   });
