@@ -13,17 +13,15 @@ div.navbar.navbar-inverse.navbar-static-top
         li
           a(href="/leaderboard") Leaderboard
 
-      div= "an-${activeNav}"
-
       div.navbar-right
         if user
           div.navbar-text Welcome&nbsp;
             span.user= user.split('@')[0]
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
-              button#logout.btn.btn-danger(type="submit") Sign out
+              a#logout.btn.btn-danger(type="submit") Sign out
         else
           form.navbar-form#login-form(action="/auth", method="POST")
             input#assertion-field(type="hidden", name="assertion", value="")
             input(type="hidden", name="_csrf", value=csrf)
-            button#browserid.btn.btn-success(href='#') Sign in
+            a#browserid.btn.btn-success(href='#') Sign in
