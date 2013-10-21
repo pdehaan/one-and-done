@@ -2,6 +2,15 @@ header.page-header
   h1 Tasks
     small: span.glyphicon.glyphicon-ok.ico.green
 
+if userData.currentTaskComplete == 1
+  table.table.table-hover.table-responsive.tasks-table
+    tbody
+      tr
+        td MyTasks:
+        td #{userData.currentTaskId}
+        td #{currentTask.title}
+        td: a(href="/task/complete/#{userData.currentTaskId}") mark completed
+
 table.table.table-hover.table-responsive.tasks-table
   thead
     tr

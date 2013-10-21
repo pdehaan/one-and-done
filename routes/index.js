@@ -52,13 +52,24 @@ exports.index = function (req, res) {
  */
 exports.tasks = function (req, res) {
   "use strict";
-
+  var user_id = escapeEmailAddress(req.session.user) || "";
+  var task_id = parseInt(req.params.task_id, 10) || 0;
   //fetch all tasks
   var fb = new Firebase(DB_BASE_URL);
-  fb.child('tasks').once('value', function (snap) {
-    res.render("tasks", {
-      "title": DEF_TITLE + " > Tasks",
-      "tasks": snap.val()
+  //Get All Tasks
+  fb.child('tasks').once('value', function (tasks) {
+    //Get user's current task
+    fb.child('tasks/' + task_id).once('value', function (userTask) {
+      // Get user info
+      fb.child("users/" + user_id).once('value', function (userData) {
+        console.log(userTask.val());
+        res.render("tasks", {
+          "title": DEF_TITLE + " > Tasks",
+          "tasks": tasks.val(),
+          "userData": userData.val(),
+          "currentTask": userTask.val()
+        });
+      });
     });
   });
 };
@@ -87,6 +98,10 @@ exports.take = function (req, res) {
         "currentTaskComplete": 0,
         "currentTaskClaimedDate": epoch
       });
+      // Update task order to bottom of stack
+      fb.child("tasks/" + task_id).update({
+        "order": 1
+      });
       res.redirect('/tasks');
     });
   } else {
@@ -112,7 +127,7 @@ exports.complete = function (req, res) {
   // User takes task, update db
   if (user_id && task_id) {
     var epoch = Math.round(Date.now() / 1000);
-    // Add new user with data
+    // Get User Data
     fb.child("users/" + user_id).once('value', function (userData) {
       console.log(userData.val());
       // Get current completed_tasks
@@ -148,7 +163,7 @@ exports.leaderboard = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("leaderboard", {
       "title": DEF_TITLE + " > Leaderboard",
-      "users": usersList
+      "users": usersList.val()
     });
   });
 };
