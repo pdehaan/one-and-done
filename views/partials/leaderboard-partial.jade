@@ -1,0 +1,20 @@
+header.page-header
+  h1 Leaderboard
+    small: span.glyphicon.glyphicon-fire.ico.red
+
+table.table.table-striped.table-condensed.table-responsive.leaderboard-table
+  thead
+    tr
+      th User
+      th.text-right Tasks Completed
+
+  tbody
+    - each user in users
+      tr
+        td #{user.displayName}
+        td.text-right #{user.completed_tasks ? user.completed_tasks.length : 0}
+
+  tfoot
+    tr
+      td.text-muted(colspan="2")
+        small.pull-right October 11 - October 18

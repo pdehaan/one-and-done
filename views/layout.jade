@@ -3,7 +3,7 @@ html
   head
     title= title
     link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
-    link(rel='stylesheet', href='http://mozilla.github.io/Fira/fira.css')
+    link(rel='stylesheet', href='//rawgithub.com/mozilla/Fira/master/fira.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     include partials/nav
@@ -17,6 +17,5 @@ html
     script(src='https://login.persona.org/include.js')
     script(src='https://cdn.firebase.com/v0/firebase-simple-login.js')
     script(src='https://cdn.firebase.com/v0/firebase.js')
-
     script(src='/scripts/main.js')
-
+    block inlinescript

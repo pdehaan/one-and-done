@@ -1,29 +1,40 @@
 * {
-    font-family: 'Fira Sans' !important;
+  font-family: 'Fira Sans' !important;
 }
 body {
-    padding-bottom: 100px;
+  padding-bottom: 100px;
 }
 
 .copy {
-    font-weight: 300;
+  font-weight: 300;
 }
-.dino {
-    font-size: 2.2em;
-    padding-right: 10px;
-}
+
 .glyphicon {
-    font-family: 'Glyphicons Halflings' !important;
+  font-family: 'Glyphicons Halflings' !important;
 }
 .ico {
-    padding: 0 0.5em;
+  padding: 0 0.5em;
+}
+.dino {
+  font-size: 5em;
+  padding: 0 20px;
 }
 .leaderboard-panel {
-    padding-top: 0;
+  padding-top: 0;
 }
 .red {
   color: red;
 }
-.user {
-    font-weight: 700;
+.green {
+  color: green;
 }
+.user {
+  font-weight: 700;
+}
+
+/*
+.leaderboard-table tbody tr:first-child td {
+  color: green;
+  font-weight: bold;
+}
+*/
