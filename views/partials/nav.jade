@@ -21,9 +21,11 @@ div.navbar.navbar-inverse.navbar-static-top
             span.user= user.split('@')[0]
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
-              button#logout.btn.btn-danger(type="submit") Sign out
+              a.button(href='/logout') Sign out
         else
-          form.navbar-form#login-form(action="/auth", method="POST")
-            input#assertion-field(type="hidden", name="assertion", value="")
-            input(type="hidden", name="_csrf", value=csrf)
-            button#browserid.btn.btn-success(href='#') Sign in
+           form.navbar-form#login-form(action="/auth", method="POST")
+              input#_authToken(type="hidden", name="_authToken", value="")
+              input#_email(type="hidden", name="_email", value="")
+              input#_id(type="hidden", name="_id", value="")
+              input#_md5_hash(type="hidden", name="_md5_hash", value="")
+              a.button(href="javascript:login('persona', '#{db_base_url}')") Sign in
