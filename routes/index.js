@@ -8,13 +8,14 @@ var DEF_TITLE = "Mozilla One and Done";
 
 
 function escapeEmailAddress(email) {
+  "use strict";
+
   if (!email) {
     return false;
   }
 
   // Replace '.' (not allowed in a Firebase key) with ','
-  email = email.toLowerCase().replace(/\./g, ',');
-  return email;
+  return email.toLowerCase().replace(/\./g, ',');
 }
 
 
@@ -25,8 +26,6 @@ function getLeaderboard(cb) {
   var fb = new Firebase(DB_BASE_URL);
   fb.child('users').once('value', function (snap) {
     var usersList = snap.val();
-
-    console.log(JSON.stringify(usersList, null, 2));
     cb(usersList);
   });
 }
@@ -41,7 +40,8 @@ exports.index = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("index", {
       "title": DEF_TITLE + " > Home",
-      "users": usersList
+      "users": usersList,
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
@@ -163,7 +163,8 @@ exports.leaderboard = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("leaderboard", {
       "title": DEF_TITLE + " > Leaderboard",
-      "users": usersList.val()
+      "users": usersList,
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
@@ -229,6 +230,7 @@ exports.userCheck = function (req, res) {
       });
     } else {
       // They're cool, let them in.
+      req.session.username = user.displayName;
       res.redirect("/tasks");
     }
   });

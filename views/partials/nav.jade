@@ -16,7 +16,7 @@ div.navbar.navbar-inverse.navbar-static-top
       div.navbar-right
         if user
           div.navbar-text Welcome&nbsp;
-            span.user= user.split('@')[0]
+            span.user= user_name
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
               a#logout.btn.btn-danger(type="submit") Sign out
