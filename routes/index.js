@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 var Firebase = require('firebase'),
-    verify = require('browserid-verify')({type : 'remote'});
-
-var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone-dev.firebaseIO.com";
+url = require("url");
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 var DEF_TITLE = "Mozilla One and Done";
-
 
 function escapeEmailAddress(email) {
   "use strict";
@@ -40,8 +38,7 @@ exports.index = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("index", {
       "title": DEF_TITLE + " > Home",
-      "users": usersList,
-      "user_name": req.session.username || "Stranger"
+      "users": usersList, 
     });
   });
 };
@@ -174,42 +171,21 @@ exports.leaderboard = function (req, res) {
 /*
  * GET Persona Auth Magic
  */
-exports.auth = function (audience) {
+
+exports.auth = function (req, res) {
   "use strict";
-
-  return function (req, res) {
-    var assertion = req.body.assertion;
-
-    console.info('verifying with persona');
-
-    verify(assertion, audience, function (err, email, data) {
-      console.log(data);
-      if (err) {
-        // return JSON with a 500 saying something went wrong
-        console.warn('request to verifier failed : ' + err);
-        return res.send(200, {
-          "status": "failure",
-          "reason": err.toString()
-        });
-      }
-
-      // got a result, check if it was okay or not
-      if (email) {
-        console.info('browserid auth successful, setting req.session.user');
-        req.session.user = email;
-        return res.redirect('/user/check');
-      }
-
-      // request worked, but verfication didn't, return JSON
-      if (!email) {
-        req.session = null;
-        return res.json({
-          "ok": false,
-          "msg": res.reason
-        });
-      }
-    });
+  var auth = { token: req.body._authToken,
+               id:    req.body._id, 
+               email: req.body._email, 
+               md5_hash: req.body._md5_hash
   };
+  if (auth.token && auth.id &&
+        auth.email && auth.md5_hash) {
+    console.log("setting req.session.user / auth");
+    req.session.auth = auth;
+    req.session.user = auth.email;
+  }
+  res.redirect('/');
 };
 
 
@@ -264,7 +240,8 @@ exports.userCreate = function (req, res) {
  */
 exports.logout = function (req, res) {
   "use strict";
-
+  var fb = new Firebase(DB_BASE_URL);
+  fb.unauth();
   req.session.destroy();
   res.redirect('/');
 };
