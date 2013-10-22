@@ -61,13 +61,14 @@ exports.tasks = function (req, res) {
     //Get user's current task
     fb.child('tasks/' + task_id).once('value', function (userTask) {
       // Get user info
+      console.log(userTask.val());
       fb.child("users/" + user_id).once('value', function (userData) {
-        console.log(userTask.val());
         res.render("tasks", {
           "title": DEF_TITLE + " > Tasks",
           "tasks": tasks.val(),
           "userData": userData.val(),
-          "currentTask": userTask.val()
+          "currentTask": userTask.val(),
+          "user_name": req.session.username || "Stranger"
         });
       });
     });
