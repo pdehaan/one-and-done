@@ -3,14 +3,22 @@ header.page-header
     small: span.glyphicon.glyphicon-ok.ico.green
 
 if userData.currentTaskComplete == 0
+  h2.text-muted My Tasks
   table.table.table-hover.table-responsive.tasks-table
+    thead
+      tr
+        th #
+        th Task
+        th &nbsp;
     tbody
       tr
-        td MyTasks:
         td #{userData.currentTaskId}
         td #{currentTask.title}
-        td: a(href="/task/complete/#{userData.currentTaskId}") mark completed
+        td.text-right
+          a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Mark completed
+            span.glyphicon.glyphicon-ok.ico
 
+h2.text-muted All Tasks
 table.table.table-hover.table-responsive.tasks-table
   thead
     tr
@@ -22,7 +30,9 @@ table.table.table-hover.table-responsive.tasks-table
     - each task, index in tasks
       tr
         th= index+1
-        td: a(href="/task/take/#{task.id}")= task.title
+        td
+          a(href="/task/take/#{task.id}"): b= task.title
+          p= task.description
         td.text-right: small= task.time
 
   //
