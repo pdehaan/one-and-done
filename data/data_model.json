@@ -45,20 +45,44 @@
   "tasks" : [ {
     "type" : 1,
     "order" : 1,
-    "title" : "Do something",
+    "title" : "Test WebRTC",
+    "description" : "1. go here, 2. have a two way audio video",
+    "requirements" : "video camera",
     "time" : "5m",
-    "id" : 1
+    "id" : 0
   }, {
     "type" : 1,
     "order" : 2,
-    "title" : "Do more stuff and thingz",
+    "title" : "Install Add On to Nightly Channel Firefox",
+    "description" : "1. Install Nightly Firefox 2. add 10 of your favorite add ons",
+    "requirements" : "",
     "time" : "15m",
-    "id" : 2
+    "id" : 1
   }, {
     "type" : 2,
-    "order" : 3,
+    "order" : 5,
     "title" : "Log in to persona with a nightly build on B2G",
+    "description" : "1. goto beta.123done.org 2. sign in with yahoo, gmail accounts",
+    "requirements" : "",
+    "time" : "5m",
+    "id" : 2
+  },
+  {
+    "type" : 2,
+    "order" : 3,
+    "title" : "Download app in marketplace on android",
+    "description" : "1. goto marketplace.firefox.org 2. install 10 apps",
+    "requirements" : "Android Phone",
     "time" : "5m",
     "id" : 3
+  },
+  {
+    "type" : 2,
+    "order" : 3,
+    "title" : "Fetch email on b2g phone",
+    "description" : "1. on any b2g phone sync contacts",
+    "requirements" : "b2g phone",
+    "time" : "5m",
+    "id" : 4
   } ]
 }

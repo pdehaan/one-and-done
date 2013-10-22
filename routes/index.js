@@ -3,7 +3,7 @@
 var Firebase = require('firebase'),
     verify = require('browserid-verify')({type : 'remote'});
 
-var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone-dev.firebaseIO.com";
 var DEF_TITLE = "Mozilla One and Done";
 
 
@@ -52,14 +52,25 @@ exports.index = function (req, res) {
  */
 exports.tasks = function (req, res) {
   "use strict";
-
+  var user_id = escapeEmailAddress(req.session.user) || "";
+  var task_id = parseInt(req.params.task_id, 10) || 0;
   //fetch all tasks
   var fb = new Firebase(DB_BASE_URL);
-  fb.child('tasks').once('value', function (snap) {
-    res.render("tasks", {
-      "title": DEF_TITLE + " > Tasks",
-      "tasks": snap.val(),
-      "user_name": req.session.username || "Stranger"
+  //Get All Tasks
+  fb.child('tasks').once('value', function (tasks) {
+    //Get user's current task
+    fb.child('tasks/' + task_id).once('value', function (userTask) {
+      // Get user info
+      console.log(userTask.val());
+      fb.child("users/" + user_id).once('value', function (userData) {
+        res.render("tasks", {
+          "title": DEF_TITLE + " > Tasks",
+          "tasks": tasks.val(),
+          "userData": userData.val(),
+          "currentTask": userTask.val(),
+          "user_name": req.session.username || "Stranger"
+        });
+      });
     });
   });
 };
@@ -80,17 +91,59 @@ exports.take = function (req, res) {
     var epoch = Math.round(Date.now() / 1000);
     console.log('epoch: ' + epoch);
     // Add new user with data
-    fb.child("users/" + user_id).once('value', function (snap) {
-      var newTotalTasks = (snap.val().numTasksCompleted || 0) + 1;
+    fb.child("users/" + user_id).once('value', function (userData) {
+      console.log(userData.val());
+      // Update current task info for user
       fb.child("users/" + user_id).update({
-        "user_id": user_id,
         "currentTaskId": task_id,
         "currentTaskComplete": 0,
-        "currentTaskClaimedDate": epoch,
-        "lastCompletedDate": epoch,
-        "numTasksCompleted": newTotalTasks
+        "currentTaskClaimedDate": epoch
+      });
+      // Update task order to bottom of stack
+      fb.child("tasks/" + task_id).update({
+        "order": 1
       });
       res.redirect('/tasks');
+    });
+  } else {
+    res.json({
+      "status": "fail",
+      "user_id": user_id,
+      "task_id": task_id
+    });
+  }
+};
+
+
+/*
+ * GET Complete a task
+ */
+exports.complete = function (req, res) {
+  "use strict";
+
+  var user_id = escapeEmailAddress(req.session.user) || "";
+  var task_id = parseInt(req.params.task_id, 10) || 0;
+  var fb = new Firebase(DB_BASE_URL);
+
+  // User takes task, update db
+  if (user_id && task_id) {
+    var epoch = Math.round(Date.now() / 1000);
+    // Get User Data
+    fb.child("users/" + user_id).once('value', function (userData) {
+      console.log(userData.val());
+      // Get current completed_tasks
+      fb.child("users/" + user_id + "/completed_tasks").once('value', function (userTasks) {
+          var completedTasksString = userTasks.val() + "," + task_id;
+          var newCompletedTasks = JSON.parse("[" + completedTasksString + "]");
+          // Update current task info for user
+          fb.child("users/" + user_id).update({
+            "currentTaskId": task_id,
+            "currentTaskComplete": 1,
+            "lastCompletedDate": epoch
+          });
+          fb.child("users/" + user_id + "/completed_tasks").update(newCompletedTasks);
+          res.redirect('/tasks');
+        });
     });
   } else {
     res.json({
