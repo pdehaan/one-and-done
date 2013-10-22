@@ -164,7 +164,7 @@ exports.leaderboard = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("leaderboard", {
       "title": DEF_TITLE + " > Leaderboard",
-      "users": usersList.val(),
+      "users": usersList,
       "user_name": req.session.username || "Stranger"
     });
   });
