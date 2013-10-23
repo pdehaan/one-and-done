@@ -48,7 +48,7 @@ exports.leaderboard = function (req, res) {
 exports.userCheck = function (req, res) {
   "use strict";
 
-  var user_id = user.auth.id;
+  var user_id = req.session.auth.id;
   var fb = new Firebase(DB_BASE_URL + "/users");
   fb.child(user_id).once('value', function (snap) {
     var user = snap.val();
@@ -70,19 +70,21 @@ exports.userCheck = function (req, res) {
  * POST userCreate
  */
 exports.userCreate = function (req, res) {
-  var user_id = user.auth.id;
+  var user_id = req.session.auth.id;
   var user_name = req.body.username.trim();
   var fb = new Firebase(DB_BASE_URL + "/users");
-  fb.child(user_id).update({
-    "displayName": user_name,
-    "email": req.session.user,
-    "createdOnDate": Date.now(),
-    "completed_tasks": [],
-    "currentTaskClaimedDate": 0,
-    "lastCompletedDate": 0,
-    "lastLoginDate": Date.now()
-  });
-  req.session.username = user_name;
+  var user = {
+     "displayName": user_name,
+     "email": req.session.auth.email,
+     "createdOnDate": Date.now(),
+     "completed_tasks": [],
+     "currentTaskClaimedDate": 0,
+     "lastCompletedDate": 0,
+     "lastLoginDate": Date.now()
+   };
+
+  fb.child(user_id).update(user);
+  req.session.user = user;
   res.redirect("/tasks");
 };
 
