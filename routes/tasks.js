@@ -43,6 +43,7 @@ exports.tasks = function (req, res) {
  exports.view = function (req, res) {
     
  }
+
  exports.take = function (req, res) {
    "use strict";
    if (req.session.auth && parseInt(req.params.task_id) > 0) {
@@ -77,35 +78,60 @@ exports.tasks = function (req, res) {
    }
  };
 
+/*
+* GET Cancel task
+*/
+exports.cancel = function (req, res) {
+  "use strict";
+  if(req.session.auth && parseInt(req.params.task_id) > 0 ) {
+    var user_id = req.session.auth.id ;
+    var task_id = parseInt(req.params.task_id, 10) || 0;
+    var fb = new Firebase(DB_BASE_URL);
+
+    fb.child("users/" + user_id).once('value', function (userData) {
+      fb.child("users/" + user_id).update({
+        "currentTaskId": -1,
+        "currentTaskComplete": 0
+      });
+      res.redirect('/tasks');
+    });
+  } else {
+    res.json({
+      "status": "fail",
+      "user_id": user_id,
+      "task_id": task_id
+    });
+  }
+};
+
  /*
   * GET Complete a task
   */
  exports.complete = function (req, res) {
    "use strict";
- 
-   var user_id = user.auth.id;
-   var task_id = parseInt(req.params.task_id, 10) || 0;
-   var fb = new Firebase(DB_BASE_URL);
- 
-   // User takes task, update db
-   if (user_id && task_id) {
+
+   if(req.session.auth && parseInt(req.params.task_id) > 0 ) {
+     var user_id = user.auth.id;
+     var task_id = parseInt(req.params.task_id, 10) || 0;
+     var fb = new Firebase(DB_BASE_URL);
+
      var epoch = Math.round(Date.now() / 1000);
      // Get User Data
      fb.child("users/" + user_id).once('value', function (userData) {
        console.log(userData.val());
        // Get current completed_tasks
        fb.child("users/" + user_id + "/completed_tasks").once('value', function (userTasks) {
-           var completedTasksString = userTasks.val() + "," + task_id;
-           var newCompletedTasks = JSON.parse("[" + completedTasksString + "]");
-           // Update current task info for user
-           fb.child("users/" + user_id).update({
-             "currentTaskId": task_id,
-             "currentTaskComplete": 1,
-             "lastCompletedDate": epoch
-           });
-           fb.child("users/" + user_id + "/completed_tasks").update(newCompletedTasks);
-           res.redirect('/tasks');
+         var completedTasksString = userTasks.val() + "," + task_id;
+         var newCompletedTasks = JSON.parse("[" + completedTasksString + "]");
+         // Update current task info for user
+         fb.child("users/" + user_id).update({
+           "currentTaskId": task_id,
+           "currentTaskComplete": 1,
+           "lastCompletedDate": epoch
          });
+         fb.child("users/" + user_id + "/completed_tasks").update(newCompletedTasks);
+         res.redirect('/tasks');
+       });
      });
    } else {
      res.json({

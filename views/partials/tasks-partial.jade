@@ -2,7 +2,7 @@ header.page-header
   h1 Tasks
     small: span.glyphicon.glyphicon-ok.ico.green
 
-if userData && userData.currentTaskComplete == 0
+if (userData && currentTask)
   h2.text-muted My Tasks
   table.table.table-hover.table-responsive.tasks-table
     thead
@@ -13,9 +13,12 @@ if userData && userData.currentTaskComplete == 0
     tbody
       tr
         td #{userData.currentTaskId}
-        td #{currentTask.title}
+        td <strong>#{currentTask.title}</strong>
+          p #{currentTask.description}
         td.text-right
-          a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Mark completed
+            a(href="/task/cancel/#{userData.currentTaskId}") cancel
+            &nbsp;
+            a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Done! 
             span.glyphicon.glyphicon-ok.ico
 
 h2.text-muted All Tasks
