@@ -12,8 +12,8 @@ var routes = require('./routes');
 
 var PORT = process.env.PORT || 3000;
 var HOST_URL = process.env.HOST_URL || "http://localhost";
-var AUDIENCE = HOST_URL + ':' + PORT;
-var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
+// var AUDIENCE = HOST_URL + ':' + PORT;
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone-dev.firebaseIO.com";
 
 var app = express();
 // all environments
@@ -50,6 +50,7 @@ app.get('/', routes.index);
 app.get('/tasks', routes.tasks);
 app.get('/task/take/:task_id', routes.take);
 app.get('/task/complete/:task_id', routes.complete);
+app.get('/task/cancel/:task_id', routes.cancel);
 app.get('/leaderboard', routes.leaderboard);
 app.get('/logout', routes.logout);
 app.post('/auth', routes.auth);
@@ -58,5 +59,6 @@ app.post('/user/create', routes.userCreate);
 
 http.createServer(app).listen(app.get('port'), function () {
   "use strict";
+
   console.log('Express server listening on port %d', app.get('port'));
 });

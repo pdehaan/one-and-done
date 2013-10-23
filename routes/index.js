@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 var Firebase = require('firebase'),
-url = require("url");
-var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
+    verify = require('browserid-verify')({type : 'remote'});
+
+var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone-dev.firebaseIO.com";
 var DEF_TITLE = "Mozilla One and Done";
+
 
 function escapeEmailAddress(email) {
   "use strict";
@@ -28,7 +30,6 @@ function getLeaderboard(cb) {
   });
 }
 
-
 /*
  * GET home page.
  */
@@ -38,28 +39,29 @@ exports.index = function (req, res) {
   getLeaderboard(function (usersList) {
     res.render("index", {
       "title": DEF_TITLE + " > Home",
-      "users": usersList, 
+      "users": usersList,
+      "user_name": req.session.username || "Stranger"
     });
   });
 };
 
-
 /*
  * GET Tasks page
  */
+
 exports.tasks = function (req, res) {
   "use strict";
   var user_id = escapeEmailAddress(req.session.user) || "";
-  var task_id = parseInt(req.params.task_id, 10) || 0;
   //fetch all tasks
   var fb = new Firebase(DB_BASE_URL);
   //Get All Tasks
   fb.child('tasks').once('value', function (tasks) {
     //Get user's current task
-    fb.child('tasks/' + task_id).once('value', function (userTask) {
-      // Get user info
-      console.log(userTask.val());
-      fb.child("users/" + user_id).once('value', function (userData) {
+    fb.child("users/" + user_id).once('value', function (userData) {
+      // get task info
+      console.log('currentTaskId' + userData.val().currentTaskId);
+      fb.child('tasks/' + userData.val().currentTaskId).once('value', function (userTask) {
+        // Get user info
         res.render("tasks", {
           "title": DEF_TITLE + " > Tasks",
           "tasks": tasks.val(),
@@ -72,10 +74,10 @@ exports.tasks = function (req, res) {
   });
 };
 
-
 /*
  * GET Assign task to user
  */
+
 exports.take = function (req, res) {
   "use strict";
 
@@ -84,12 +86,10 @@ exports.take = function (req, res) {
   var fb = new Firebase(DB_BASE_URL);
 
   // User takes task, update db
-  if (user_id && task_id) {
+  if (user_id && task_id !== "") {
     var epoch = Math.round(Date.now() / 1000);
-    console.log('epoch: ' + epoch);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (userData) {
-      console.log(userData.val());
       // Update current task info for user
       fb.child("users/" + user_id).update({
         "currentTaskId": task_id,
@@ -100,6 +100,36 @@ exports.take = function (req, res) {
       fb.child("tasks/" + task_id).update({
         "order": 1
       });
+      res.redirect('/tasks');
+    });
+  } else {
+    res.json({
+      "status": "fail",
+      "user_id": user_id,
+      "task_id": task_id
+    });
+  }
+};
+
+
+/*
+ * GET Complete a task
+ */
+exports.cancel = function (req, res) {
+  "use strict";
+
+  var user_id = escapeEmailAddress(req.session.user) || "";
+  var task_id = parseInt(req.params.task_id, 10) || 0;
+  var fb = new Firebase(DB_BASE_URL);
+
+  // Set user to no task assigned
+  if (user_id && task_id !== "") {
+    fb.child("users/" + user_id).once('value', function (userData) {
+      fb.child("users/" + user_id).update({
+        "currentTaskId": -1,
+        "currentTaskComplete": 0
+      });
+
       res.redirect('/tasks');
     });
   } else {
@@ -127,7 +157,6 @@ exports.complete = function (req, res) {
     var epoch = Math.round(Date.now() / 1000);
     // Get User Data
     fb.child("users/" + user_id).once('value', function (userData) {
-      console.log(userData.val());
       // Get current completed_tasks
       fb.child("users/" + user_id + "/completed_tasks").once('value', function (userTasks) {
           var completedTasksString = userTasks.val() + "," + task_id;
@@ -155,6 +184,7 @@ exports.complete = function (req, res) {
 /*
  * GET Leaderboard
  */
+
 exports.leaderboard = function (req, res) {
   "use strict";
 
@@ -166,7 +196,6 @@ exports.leaderboard = function (req, res) {
     });
   });
 };
-
 
 /*
  * GET Persona Auth Magic
@@ -187,7 +216,6 @@ exports.auth = function (req, res) {
   }
   res.redirect('/');
 };
-
 
 /**
  * GET userCheck
@@ -240,8 +268,7 @@ exports.userCreate = function (req, res) {
  */
 exports.logout = function (req, res) {
   "use strict";
-  var fb = new Firebase(DB_BASE_URL);
-  fb.unauth();
+
   req.session.destroy();
   res.redirect('/');
 };
