@@ -2,7 +2,7 @@ header.page-header
   h1 Tasks
     small: span.glyphicon.glyphicon-ok.ico.green
 
-if userData.currentTaskComplete == 0
+if userData && userData.currentTaskComplete == 0
   h2.text-muted My Tasks
   table.table.table-hover.table-responsive.tasks-table
     thead

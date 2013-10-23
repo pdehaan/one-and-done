@@ -6,9 +6,12 @@
 
 var http = require('http');
 var path = require('path');
+var url = require('url');
 
 var express = require('express');
-var routes = require('./routes');
+var routes = require('./routes/index.js');
+var auth = require('./routes/auth.js');
+var task = require('./routes/tasks.js');
 
 var PORT = process.env.PORT || 3000;
 var HOST_URL = process.env.HOST_URL || "http://localhost";
@@ -30,10 +33,13 @@ app.use(express.cookieParser());
 app.use(express.session({'secret': 'What Does the Fox Say'}));
 // app.use(express.csrf());
 app.use(function (req, res, next) {
+  var path = url.parse(req.url).pathname;
+  path = path.replace('/',' > ');
   if (req.session.user) {
     res.locals.user = req.session.user;
   }
   res.locals.db_base_url = DB_BASE_URL;
+  res.locals.title = "Mozilla One and Done" + path;
   next();
 });
 app.use(app.router);
@@ -47,12 +53,12 @@ if (app.get('env') === 'development') {
 }
 
 app.get('/', routes.index);
-app.get('/tasks', routes.tasks);
-app.get('/task/take/:task_id', routes.take);
-app.get('/task/complete/:task_id', routes.complete);
+app.get('/tasks', task.tasks);
+app.get('/task/take/:task_id', task.take);
+app.get('/task/complete/:task_id', task.complete);
 app.get('/leaderboard', routes.leaderboard);
-app.get('/logout', routes.logout);
-app.post('/auth', routes.auth);
+app.get('/logout', auth.logout);
+app.post('/auth', auth.auth);
 app.get('/user/check', routes.userCheck);
 app.post('/user/create', routes.userCreate);
 

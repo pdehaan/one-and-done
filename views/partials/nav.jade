@@ -16,7 +16,7 @@ div.navbar.navbar-inverse.navbar-static-top
       div.navbar-right
         if user
           div.navbar-text Welcome&nbsp;
-            span.user= user_name
+            span.user= _locals.user
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
               a.button(href='/logout') Sign out
