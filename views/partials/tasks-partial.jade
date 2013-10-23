@@ -11,15 +11,20 @@ if (userData && currentTask)
         th Task
         th &nbsp;
     tbody
-      tr
-        td #{userData.currentTaskId}
-        td <strong>#{currentTask.title}</strong>
-          p #{currentTask.description}
-        td.text-right
-            a(href="/task/cancel/#{userData.currentTaskId}") cancel
-            &nbsp;
-            a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Done! 
-            span.glyphicon.glyphicon-ok.ico
+      tr 
+          td #{userData.currentTaskId}
+          td 
+            a(href="/task/view/#{userData.currentTaskId}"): b= currentTask.title
+            p #{currentTask.description}
+          td.text-right
+            if (userData.currentTaskComplete == 0)
+              a(href="/task/cancel/#{userData.currentTaskId}") cancel
+              &nbsp;
+              a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Done! 
+              span.glyphicon.glyphicon-ok.ico
+            else
+              p Completed
+              span.glyphicon.glyphicon-ok.ico
 
 h2.text-muted All Tasks
 table.table.table-hover.table-responsive.tasks-table
