@@ -19,7 +19,6 @@ function escapeEmailAddress(email) {
 }
 
 
-
 function getLeaderboard(cb) {
   "use strict";
 
@@ -33,6 +32,7 @@ function getLeaderboard(cb) {
 /*
  * GET home page.
  */
+
 exports.index = function (req, res) {
   "use strict";
 
@@ -86,7 +86,7 @@ exports.take = function (req, res) {
   var fb = new Firebase(DB_BASE_URL);
 
   // User takes task, update db
-  if (user_id && task_id !== "") {
+  if (user_id && task_id !== -1) {
     var epoch = Math.round(Date.now() / 1000);
     // Add new user with data
     fb.child("users/" + user_id).once('value', function (userData) {
@@ -111,10 +111,10 @@ exports.take = function (req, res) {
   }
 };
 
-
 /*
  * GET Complete a task
  */
+
 exports.cancel = function (req, res) {
   "use strict";
 
@@ -145,6 +145,7 @@ exports.cancel = function (req, res) {
 /*
  * GET Complete a task
  */
+
 exports.complete = function (req, res) {
   "use strict";
 
@@ -220,6 +221,7 @@ exports.auth = function (req, res) {
 /**
  * GET userCheck
  */
+
 exports.userCheck = function (req, res) {
   "use strict";
 
@@ -245,6 +247,7 @@ exports.userCheck = function (req, res) {
 /*
  * POST userCreate
  */
+
 exports.userCreate = function (req, res) {
   var user_id = escapeEmailAddress(req.session.user);
   var user_name = req.body.username.trim();
@@ -266,6 +269,7 @@ exports.userCreate = function (req, res) {
 /*
  * GET Persona Auth Magic
  */
+ 
 exports.logout = function (req, res) {
   "use strict";
 
