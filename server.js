@@ -64,7 +64,7 @@ app.post('/auth', auth.auth);
 app.get('/user/check', routes.userCheck);
 app.post('/user/create', routes.userCreate);
 
-http.createServer(app).listen(app.get('port'), function () {
+http.createServer(app).listen(app.get('port'), '127.0.0.1', function () {
   "use strict";
   console.log('Express server listening on port %d', app.get('port'));
 });
