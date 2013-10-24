@@ -55,9 +55,9 @@ exports.view = function (req, res) {
 
 exports.take = function (req, res) {
   "use strict";
-  if (req.session.auth && parseInt(req.params.task_id) > 0) {
+  if (req.session.auth && parseInt(req.params.task_id) > -1) {
    var user_id = req.session.auth.id;
-    var task_id = parseInt(req.params.task_id, 10) || 0;
+    var task_id = req.params.task_id;
     var fb = new Firebase(DB_BASE_URL);
 
     // User takes task, update db
@@ -92,9 +92,9 @@ exports.take = function (req, res) {
 */
 exports.cancel = function (req, res) {
   "use strict";
-  if(req.session.auth && parseInt(req.params.task_id) > 0 ) {
-    var user_id = req.session.auth.id ;
-    var task_id = parseInt(req.params.task_id, 10) || 0;
+  if(req.session.auth && parseInt(req.params.task_id) > -1 ) {
+    var user_id = req.session.auth.id;
+    var task_id = req.params.task_id;
     var fb = new Firebase(DB_BASE_URL);
 
     fb.child("users/" + user_id).once('value', function (userData) {
@@ -119,9 +119,9 @@ exports.cancel = function (req, res) {
  exports.complete = function (req, res) {
    "use strict";
 
-   if(req.session.auth && parseInt(req.params.task_id) > 0 ) {
+   if(req.session.auth && parseInt(req.params.task_id) > -1 ) {
      var user_id = req.session.auth.id;
-     var task_id = parseInt(req.params.task_id, 10) || 0;
+     var task_id = req.params.task_id;
      var fb = new Firebase(DB_BASE_URL);
 
      var epoch = Math.round(Date.now() / 1000);
