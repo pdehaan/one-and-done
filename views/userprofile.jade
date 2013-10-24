@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  h1 Profile
+    small.glyphicon.glyphicon-user.ico.text-muted
+
+  p.lead Thank you for joining the Mozilla One and Done site and helping improve the Mozilla community!
+
+  form.form-horizontal(action="/user/update", method="POST", role="form")
+    div.form-group
+      label.control-label.col-lg-2 Email:
+      div.col-lg-4: label.control-label= user.email
+
+    div.form-group
+      label.control-label.col-lg-2(for="displayname") Display name:
+      div.col-lg-4: input#displayname.form-control(type="text", name="displayname", value=user.displayName, placeholder="Display name")
+
+    div.form-group
+      label.control-label.col-lg-2 Member since:
+      div.col-lg-4: label.control-label.text-muted= new Date(user.createdOnDate).toLocaleDateString()
+
+    div.form-group
+      div.col-lg-offset-2.col-lg-4
+        button.btn.btn-primary(type="submit") Update profile
+
+  if (user.completed_tasks.length != 0)
+    hr
+
+    h2.text-muted Completed tasks:
+    table.table
+      thead
+        tr
+          th Task Name
+
+      tbody
+      for task in user.completed_tasks
+        tr
+          td= task

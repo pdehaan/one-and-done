@@ -69,9 +69,11 @@ exports.userCheck = function (req, res) {
  * POST userCreate
  */
 exports.userCreate = function (req, res) {
+  'use strict';
+
+  var fb = new Firebase(DB_BASE_URL + "/users");
   var user_id = req.session.auth.id;
   var user_name = req.body.username.trim();
-  var fb = new Firebase(DB_BASE_URL + "/users");
   var user = {
     "displayName": user_name,
     "email": req.session.auth.email,
@@ -85,4 +87,30 @@ exports.userCreate = function (req, res) {
   fb.child(user_id).update(user);
   req.session.user = user;
   res.redirect("/tasks");
+};
+
+
+exports.userEdit = function (req, res) {
+  "use strict";
+
+  var fb = new Firebase(DB_BASE_URL + "/users");
+  var user_id = req.session.auth.id;
+
+  fb.child(user_id).once('value', function (user) {
+    res.render("userprofile", {"user": user.val()});
+  });
+};
+
+
+exports.userUpdate = function (req, res) {
+  "use srtict";
+
+  var fb = new Firebase(DB_BASE_URL + "/users");
+  var user_id = req.session.auth.id;
+  var displayName = req.body.displayname.trim();
+  var user = {"displayName": displayName};
+
+  fb.child(user_id).update(user);
+  req.session.user.displayName = user.displayName;
+  res.redirect("/user/edit");
 };

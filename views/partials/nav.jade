@@ -16,7 +16,8 @@ div.navbar.navbar-inverse.navbar-static-top
       div.navbar-right
         if user
           div.navbar-text Welcome&nbsp;
-            span.user= _locals.user.displayName
+            a.user(href="/user/edit")= _locals.user.displayName
+              span.glyphicon.glyphicon-cog.ico
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
               a.btn.btn-danger(href='/logout') Sign out

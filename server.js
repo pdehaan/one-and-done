@@ -14,7 +14,7 @@ var auth = require('./routes/auth.js');
 var task = require('./routes/tasks.js');
 
 var PORT = process.env.PORT || 3000;
-var HOST_URL = process.env.HOST_URL || "http://localhost";
+// var HOST_URL = process.env.HOST_URL || "http://localhost";
 // var AUDIENCE = HOST_URL + ':' + PORT;
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
@@ -37,6 +37,7 @@ app.use(function (req, res, next) {
   path = path.replace('/', ' > ');
   if (req.session.user) {
     res.locals.user = req.session.user;
+    console.log(res.locals.user);
   }
   res.locals.db_base_url = DB_BASE_URL;
   res.locals.title = "Mozilla One and Done" + path;
@@ -63,6 +64,8 @@ app.get('/logout', auth.logout);
 app.post('/auth', auth.auth);
 app.get('/user/check', routes.userCheck);
 app.post('/user/create', routes.userCreate);
+app.get('/user/edit', routes.userEdit);
+app.post('/user/update', routes.userUpdate);
 
 http.createServer(app).listen(app.get('port'), '127.0.0.1', function () {
   "use strict";
