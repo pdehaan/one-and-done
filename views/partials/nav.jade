@@ -19,11 +19,11 @@ div.navbar.navbar-inverse.navbar-static-top
             span.user= _locals.user.displayName
           form.navbar-form.form-inline.pull-right(role="form")
             div.form-group
-              a.button(href='/logout') Sign out
+              a.btn.btn-danger(href='/logout') Sign out
         else
            form.navbar-form#login-form(action="/auth", method="POST")
               input#_authToken(type="hidden", name="_authToken", value="")
               input#_email(type="hidden", name="_email", value="")
               input#_id(type="hidden", name="_id", value="")
               input#_md5_hash(type="hidden", name="_md5_hash", value="")
-              a.button(href="javascript:login('persona', '#{_locals.db_base_url}')") Sign in
+              a.btn.btn-success(href="javascript:login('persona', '#{_locals.db_base_url}')") Sign in

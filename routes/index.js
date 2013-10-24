@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var Firebase = require('firebase'),
-url = require("url");
+var Firebase = require('firebase');
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
 function getLeaderboard(cb) {
@@ -22,7 +21,7 @@ exports.index = function (req, res) {
 
   getLeaderboard(function (usersList) {
     res.render("index", {
-      "users": usersList, 
+      "users": usersList
     });
   });
 };
@@ -74,17 +73,16 @@ exports.userCreate = function (req, res) {
   var user_name = req.body.username.trim();
   var fb = new Firebase(DB_BASE_URL + "/users");
   var user = {
-     "displayName": user_name,
-     "email": req.session.auth.email,
-     "createdOnDate": Date.now(),
-     "completed_tasks": [],
-     "currentTaskClaimedDate": 0,
-     "lastCompletedDate": 0,
-     "lastLoginDate": Date.now()
-   };
+    "displayName": user_name,
+    "email": req.session.auth.email,
+    "createdOnDate": Date.now(),
+    "completed_tasks": [],
+    "currentTaskClaimedDate": 0,
+    "lastCompletedDate": 0,
+    "lastLoginDate": Date.now()
+  };
 
   fb.child(user_id).update(user);
   req.session.user = user;
   res.redirect("/tasks");
 };
-

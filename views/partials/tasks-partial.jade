@@ -11,19 +11,22 @@ if (userData && currentTask)
         th Task
         th &nbsp;
     tbody
-      tr 
-          td #{userData.currentTaskId}
-          td 
-            a(href="/task/view/#{userData.currentTaskId}"): b= currentTask.title
-            p #{currentTask.description}
-          td.text-right
-            if (userData.currentTaskComplete == 0)
-              a(href="/task/cancel/#{userData.currentTaskId}") cancel
-              &nbsp;
-              a.btn.btn-primary(href="/task/complete/#{userData.currentTaskId}") Done! 
-              span.glyphicon.glyphicon-ok.ico
-            else
-              p Completed
+      tr
+        th #{userData.currentTaskId}
+        td
+          a(href="/task/view/#{userData.currentTaskId}"): b= currentTask.title
+          p #{currentTask.description}
+        td.text-right
+          if (userData.currentTaskComplete == 0)
+            a.btn.btn-link.btn-sm(href="/task/cancel/#{userData.currentTaskId}")
+              span.glyphicon.glyphicon-remove
+              | &nbsp;Cancel
+            &nbsp;
+            a.btn.btn-success.btn-sm(href="/task/complete/#{userData.currentTaskId}")
+              span.glyphicon.glyphicon-ok
+              | &nbsp;Done!
+          else
+            p Completed
               span.glyphicon.glyphicon-ok.ico
 
 h2.text-muted All Tasks
@@ -42,12 +45,3 @@ table.table.table-hover.table-responsive.tasks-table
           a(href="/task/take/#{task.id}"): b= task.title
           p= task.description
         td.text-right: small= task.time
-
-  //
-    form.form-inline(name="input", action="", method="GET", role="form")
-      div.form-group
-        label.sr-only(for="user_id"): p User name
-        input#user_id.form-control(type="text", placeholder="User name", value="#{user_id}")
-
-        if user_id && task_id
-          p current task: #{task_id} #{task_title}

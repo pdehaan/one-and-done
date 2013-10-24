@@ -15,7 +15,7 @@ var task = require('./routes/tasks.js');
 
 var PORT = process.env.PORT || 3000;
 var HOST_URL = process.env.HOST_URL || "http://localhost";
-var AUDIENCE = HOST_URL + ':' + PORT;
+// var AUDIENCE = HOST_URL + ':' + PORT;
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com";
 
 var app = express();
@@ -34,7 +34,7 @@ app.use(express.session({'secret': 'What Does the Fox Say'}));
 // app.use(express.csrf());
 app.use(function (req, res, next) {
   var path = url.parse(req.url).pathname;
-  path = path.replace('/',' > ');
+  path = path.replace('/', ' > ');
   if (req.session.user) {
     res.locals.user = req.session.user;
   }
