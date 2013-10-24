@@ -141,11 +141,12 @@
     "instances" : 1, 
     "title" : "Fetch email on b2g phone",
     "description" : "1. on any b2g phone sync contacts",
-    "interests" : ["Firefox OS Phone"],
+    "interests" : ["Firefox OS", "b2g"],
+    "requirements" : ["Firefox OS Phone"],
     "time" : "5m",
     "id" : 4
   }],
   "interests" : ["b2g", "Android", "mobile", "marketplace", "persona", "identity", 
-                 "desktop", "camera", "webrtc", "html5"], 
+                 "desktop", "camera", "webrtc", "html5", "Firefox OS"], 
   "requirements" : ["Firefox OS Phone", Android Phone, "Windows", "Linux", "Mac", "Android Tablet"]
 }
