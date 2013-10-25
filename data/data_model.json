@@ -1,6 +1,6 @@
 {
   "users" : {
-    "edwong@mozilla.com" : {
+    "edwong@mozilla,com" : {
       "displayName" : "edwong",
       "lastCompleted" : 1381884124,
       "lastLogin" : 1381884124,
@@ -22,7 +22,7 @@
           "start": 1381884124
        }]
     },
-    "pdehaan@mozilla.com" : {
+    "pdehaan@mozilla,com" : {
       "displayName" : "peter",
       "lastCompleted" : 1381884124,
       "lastLogin" : 1381884124,
@@ -44,7 +44,7 @@
            "start": 1381884124
         }]
     },
-    "onecyrenus@gmail.com" : {
+    "onecyrenus@gmail,com" : {
        "displayName" : "onecyrenus",
        "lastCompleted" : 1381884124,
        "lastLogin" : 1381884124,
@@ -52,7 +52,7 @@
        "email" : "onecyrenus@gmail.com",
        "role" : "taskadmin"
     },
-     "dclarke@mozilla.com" : {
+     "dclarke@mozilla,com" : {
         "displayName" : "dclarke",
         "lastCompleted" : 1381884124,
         "lastLogin" : 1381884124,
