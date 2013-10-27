@@ -2,7 +2,7 @@ header.page-header
   h1 Tasks
     small.glyphicon.glyphicon-ok.ico.text-success
 
-if (userData && currentTask)
+if (userData && userData.currentTasks)
   h2.text-muted My Tasks
   table.table.table-hover.table-responsive.tasks-table
     thead
@@ -11,23 +11,25 @@ if (userData && currentTask)
         th Task
         th &nbsp;
     tbody
-      tr
-        th #{userData.currentTaskId}
-        td
-          a(href="/task/view/#{userData.currentTaskId}"): b= currentTask.title
-          p #{currentTask.description}
-        td.text-right
-          if (userData.currentTaskComplete == 0)
-            a.btn.btn-link.btn-sm(href="/task/cancel/#{userData.currentTaskId}")
-              span.glyphicon.glyphicon-remove
-              | &nbsp;Cancel
-            &nbsp;
-            a.btn.btn-success.btn-sm(href="/task/complete/#{userData.currentTaskId}")
-              span.glyphicon.glyphicon-ok
-              | &nbsp;Done!
-          else
-            p.text-success Completed
-              span.glyphicon.glyphicon-ok.ico
+      each currentTask in userData.currentTasks
+        - var task = tasks[currentTask.id]
+        tr
+          th #{task.id}
+          td
+            a(href="/task/view/#{task.id}"): b= task.title
+            p #{task.description}
+          td.text-right
+            if (currentTask.status == "taken")
+              a.btn.btn-link.btn-sm(href="/task/cancel/#{task.id}")
+                span.glyphicon.glyphicon-remove
+                | &nbsp;Abandon
+              &nbsp;
+              a.btn.btn-success.btn-sm(href="/task/complete/#{task.id}")
+                span.glyphicon.glyphicon-ok
+                | &nbsp;Submit for Review!
+            else
+              p.text-success In Review
+                span.glyphicon.glyphicon-ok.ico
 
 h2.text-muted All Tasks
 table.table.table-hover.table-responsive.tasks-table
@@ -39,6 +41,7 @@ table.table.table-hover.table-responsive.tasks-table
 
   tbody
     - each task, index in tasks
+      if task 
       tr
         th= index+1
         td

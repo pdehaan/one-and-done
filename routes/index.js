@@ -5,11 +5,24 @@ var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com"
 
 function getLeaderboard(cb) {
   "use strict";
-
+  var completed = 0;
   var fb = new Firebase(DB_BASE_URL);
   fb.child('users').once('value', function (snap) {
     var usersList = snap.val();
-    cb(usersList);
+    var completedTasks = usersList.completedTasks;
+    var leaderboard = [];
+    for (var key in usersList) {
+      completed = 0;
+      var calc = []
+      var completedTasks = usersList[key].completedTasks;
+      var count = 0;
+      for (var k in completedTasks) if (completedTasks.hasOwnProperty(k)) count++;
+        leaderboard.push({
+            "displayName" : usersList[key].displayName,
+            "completedTasks" : count
+        });
+    }
+    cb(leaderboard);
   });
 }
 
@@ -19,11 +32,12 @@ function getLeaderboard(cb) {
 exports.index = function (req, res) {
   "use strict";
 
-  getLeaderboard(function (usersList) {
+  getLeaderboard(function (leaderboard) {
     res.render("index", {
-      "users": usersList
+      "leaderboard": leaderboard
     });
   });
+
 };
 
 /*
@@ -31,10 +45,10 @@ exports.index = function (req, res) {
  */
 exports.leaderboard = function (req, res) {
   "use strict";
-
-  getLeaderboard(function (usersList) {
+  getLeaderboard(function (leaderboard) {
+    console.log("leaderboard result = " + leaderboard);
     res.render("leaderboard", {
-      "users": usersList,
+      "leaderboard": leaderboard,
       "user_name": req.session.username || "Stranger"
     });
   });
@@ -77,11 +91,12 @@ exports.userCreate = function (req, res) {
   var user = {
     "displayName": user_name,
     "email": req.session.auth.email,
-    "createdOnDate": Date.now(),
-    "completed_tasks": [],
-    "currentTaskClaimedDate": 0,
-    "lastCompletedDate": 0,
-    "lastLoginDate": Date.now()
+    "created": Date.now(),
+    "completedTasks": [],
+    "currentTasks": [],
+    "lastCompleted": 0,
+    "role": "contributor",
+    "lastLogin": Date.now()
   };
 
   fb.child(user_id).update(user);

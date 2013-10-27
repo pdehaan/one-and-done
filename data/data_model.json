@@ -7,20 +7,22 @@
       "created" : 1381884124,
       "email" : "edwong@mozilla.com",
       "role" : "admin",
-      "completedTasks": [{
-        "id": 2,
-        "start": 1381884124,
-        "stop": 1381885124
-       }],
-      "currentTasks" : [{
-         "id": 0,
+      "completedTasks": {
+        "task2" : {
+          "start": 1381884124,
+          "stop": 1381885124
+        }
+      },
+      "currentTasks" : {
+        "task0" : {
          "status": "taken",
-         "task" : 1381884124
-       }, {
-          "id": 1,
+         "start" : 1381884124
+         },
+         "task1" : {
           "status": "review",
           "start": 1381884124
-       }]
+        }
+      }
     },
     "pdehaan@mozilla,com" : {
       "displayName" : "peter",
@@ -29,20 +31,22 @@
       "created" : 1381884124,
       "email" : "pdehaan@mozilla.com",
       "role" : "admin",
-      "completedTasks": [{
-         "id": 2,
-         "start": 1381884124,
-         "stop": 1381885124
-        }],
-       "currentTasks" : [{
-          "id": 0,
-          "status": "taken",
-          "start" : 1381884124
-        }, {
-           "id": "1",
-           "status": "review",
-           "start": 1381884124
-        }]
+      "completedTasks": {
+        "task2" : {
+          "start": 1381884124,
+          "stop": 1381885124
+        }
+      },
+      "currentTasks" : {
+        "task0" : {
+           "status": "taken",
+           "start" : 1381884124
+        },
+         "task1" : {
+          "status": "review",
+          "start": 1381884124
+        }
+      }
     },
     "onecyrenus@gmail,com" : {
        "displayName" : "onecyrenus",
@@ -52,47 +56,51 @@
        "email" : "onecyrenus@gmail.com",
        "role" : "taskadmin"
     },
-     "dclarke@mozilla,com" : {
-        "displayName" : "dclarke",
-        "lastCompleted" : 1381884124,
-        "lastLogin" : 1381884124,
-        "created" : 1381884124,
-        "email" : "dclarke@mozilla.com",
-        "role" : "admin",
-        "completedTasks": [{
-          "id": 2,
+    "dclarke@mozilla,com" : {
+       "displayName" : "dclarke",
+       "lastCompleted" : 1381884124,
+       "lastLogin" : 1381884124,
+       "created" : 1381884124,
+       "email" : "dclarke@mozilla.com",
+       "role" : "admin",
+       "completedTasks": {
+         "task2" : {
           "start": 1381884124,
           "stop": 1381885124
-         }],
-        "currentTasks" : [{
-           "id": 0,
-           "status": "taken",
-           "start" : 1381884124
-         }, {
-            "id": "1",
-            "status": "review",
-            "start": 1381884124
-        }]
+         }, 
+         "task1" : {
+          "start": 1381884124,
+          "stop": 1381885124
+         }
+       },
+       "currentTasks" : {
+         "task0" : {
+          "status": "taken",
+          "start" : 1381884124
+         },
+         "1" : {
+          "status": "review",
+          "start": 1381884124
+         }
+       }
     }
   },
   "taskcomments" : {
-     "1" : {
-       "1" : { 
+     "task1" : [{
          "user": "dclarke@mozilla.com",
          "comment": "Is this really going to work",
          "time": 1381884124,
          "displayName": "dclarke"
-       }, 
-       "2" : {
+       },{
          "user": "onecyrenus@gmail.com",
          "comment": "Most definitely !",
          "time" : 1381884199,
          "displayName" : "onecyrenus"
        }
-     }
-   },
+     ]
+  },
   "tasks" : {
-     "1" : {
+     "0" : {
         "status" : "draft",
         "created" : 1381884199,
         "urls" : ["http://www.google.com", "http://bugzilla.mozilla.com"],
@@ -103,9 +111,9 @@
         "interests" : ["camera", "webrtc", "html5", "desktop"],
         "requirements" : ["mac", "windows"],
         "time" : "5m",
-        "id" : 1
+        "id" : 0
       },
-     "2" : {
+     "1" : {
         "status" : "published",
         "created" : 1381884199,
         "order" : 2,
@@ -115,9 +123,9 @@
         "interests" : ["desktop"],
         "requirements" : ["mac", "windows", "linux"],
         "time" : "15m",
-        "id" : 2
-     }, 
-     "3" : {
+        "id" : 1
+     },
+     "2" : {
         "status" : "draft",
         "created" : 1381884199,
         "order" : 5,
@@ -127,9 +135,9 @@
         "interests" : ["persona", "identity"],
         "requirements" : ["mac", "windows", "linux"],
         "time" : "5m",
-        "id" : 3
+        "id" : 2
      },
-     "4" : {
+     "3" : {
         "status" : "published",
         "created" : 1381884199,
         "order" : 3,
@@ -139,19 +147,19 @@
         "interests" : ["Android", "mobile", "marketplace"],
         "requirements" : ["Android Phone"],
         "time" : "5m",
-        "id" : 4
+        "id" : 3
      },
-     "5" : {
-         "status" : "published",
-         "created" : 1381884199,
-         "order" : 4,
-         "instances" : 1,
-         "title" : "Fetch email on b2g phone",
-         "description" : "1. on any b2g phone sync contacts",
-         "interests" : ["Firefox OS", "b2g"],
-         "requirements" : ["Firefox OS Phone"],
-         "time" : "5m",
-         "id" : 4
+     "4" : {
+        "status" : "published",
+        "created" : 1381884199,
+        "order" : 4,
+        "instances" : 1,
+        "title" : "Fetch email on b2g phone",
+        "description" : "1. on any b2g phone sync contacts",
+        "interests" : ["Firefox OS", "b2g"],
+        "requirements" : ["Firefox OS Phone"],
+        "time" : "5m",
+        "id" : 4
      }
   },
   "interests" : ["b2g", "Android", "mobile", "marketplace", "persona", "identity", "desktop", "camera", "webrtc", "html5", "Firefox OS"],

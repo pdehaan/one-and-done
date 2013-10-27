@@ -17,13 +17,13 @@ block content
 
     div.form-group
       label.control-label.col-lg-2 Member since:
-      div.col-lg-4: label.control-label.text-muted= new Date(user.createdOnDate).toLocaleDateString()
+      div.col-lg-4: label.control-label.text-muted= new Date(user.created).toLocaleDateString()
 
     div.form-group
       div.col-lg-offset-2.col-lg-4
         button.btn.btn-primary(type="submit") Update profile
 
-  if (user.completed_tasks.length != 0)
+  if (user.completedTasks.length != 0)
     hr
 
     h2.text-muted Completed tasks:
@@ -33,6 +33,6 @@ block content
           th Task Name
 
       tbody
-      for task in user.completed_tasks
+      for task in user.completedTasks
         tr
-          td= task
+          td= task.id

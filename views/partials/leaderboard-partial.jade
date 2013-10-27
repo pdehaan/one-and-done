@@ -9,10 +9,10 @@ table.table.table-striped.table-condensed.table-responsive.leaderboard-table
       th.text-right Tasks Completed
 
   tbody
-    - each user in users
+    - each leader in leaderboard
       tr
-        td #{user.displayName}
-        td.text-right #{user.completed_tasks ? user.completed_tasks.length : 0}
+        td #{leader.displayName}
+        td.text-right #{leader.completedTasks ? leader.completedTasks : 0}
 
   tfoot
     tr
