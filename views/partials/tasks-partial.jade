@@ -41,10 +41,10 @@ table.table.table-hover.table-responsive.tasks-table
 
   tbody
     - each task, index in tasks
-      if task 
-      tr
-        th= index+1
-        td
-          a(href="/task/take/#{task.id}"): b= task.title
-          p= task.description
-        td.text-right: small= task.time
+      if task && task.instances != 0
+        tr
+          th= index+1
+          td
+            a(href="/task/take/#{task.id}"): b= task.title
+            p= task.description
+          td.text-right: small= task.time
