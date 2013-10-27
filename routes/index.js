@@ -109,11 +109,16 @@ exports.userEdit = function (req, res) {
   "use strict";
 
   var fb = new Firebase(DB_BASE_URL + "/users");
-  var user_id = req.session.auth.id;
+  if (req.session.auth) {
+    var user_id = req.session.auth.id;
 
-  fb.child(user_id).once('value', function (user) {
-    res.render("userprofile", {"user": user.val()});
-  });
+    fb.child(user_id).once('value', function (user) {
+      res.render("userprofile", {"user": user.val()});
+    });
+  } else {
+    console.log("user is not logged in");
+    res.redirect('/');
+  }
 };
 
 

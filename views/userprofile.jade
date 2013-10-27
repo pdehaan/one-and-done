@@ -23,16 +23,19 @@ block content
       div.col-lg-offset-2.col-lg-4
         button.btn.btn-primary(type="submit") Update profile
 
-  if (user.completedTasks.length != 0)
+  if (user && user.completedTasks)
     hr
 
     h2.text-muted Completed tasks:
     table.table
       thead
         tr
-          th Task Name
+          th Task id
 
       tbody
-      for task in user.completedTasks
-        tr
-          td= task.id
+      each task, index in user.completedTasks
+          tr
+            - var id = index.substr(4);
+              td= id
+              td= task.start
+              td= task.stop
