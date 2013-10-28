@@ -1,29 +1,31 @@
 extends layout
 
 block content
-  h1 Task - #{task.title}
+ form.form-horizontal(action="/task/comment", method="POST", role="form")
 
-    table.table.table-hover.table-responsive.tasks-table
-      thead
-        tr
-          th Field
-          th Value
-      tbody
-        tr
-          td Task id:
-          td #{task.id}
-        tr 
-          td Description:
-          td p #{task.description}
-        tr
-          td Requirements: 
-          td p #{task.requirements}
-        tr 
-          td Time To Complete: 
-          td #{task.time}
-        tr 
-          td Type: 
-          td #{task.type}
-        tr 
-          td Order:
-          td #{task.order}
+   div.form-group
+     label.control-label.col-lg-2 Title: #{task.title}
+
+   div.form-group
+     label.control-label.col-lg-2 Description:
+     textarea.form-control(rows='20', name="description")  #{task.description}
+
+  div.form-group
+     label.control-label.col-lg-2 Requirements:  #{task.requirements}
+
+  div.form-group
+     label.control-label.col-lg-2 Interests:  #{task.interests}
+
+  div.form-group
+      label.control-label.col-lg-2 Time To Complete:  #{task.time}
+
+  if (task.urls)
+    div.form-group
+        label.control-label.col-lg-2 Relevent Links:
+        each url in task.urls
+          p
+          a(href=url) #{url}
+
+   div.form-group
+      label.control-label.col-lg-2 Order:  #{task.order}
+

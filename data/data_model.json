@@ -104,7 +104,7 @@
         "status" : "draft",
         "created" : 1381884199,
         "urls" : ["http://www.google.com", "http://bugzilla.mozilla.com"],
-        "instances" : 0,
+        "instances" : 1,
         "order" : 1,
         "title" : "Test WebRTC",
         "description" : "1. go here, 2. have a two way audio video",

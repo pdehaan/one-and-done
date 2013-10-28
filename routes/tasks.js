@@ -46,6 +46,10 @@ exports.view = function (req, res) {
   });
 };
 
+exports.create = function (req, res) {
+
+
+}
 exports.take = function (req, res) {
   "use strict";
   var user_id = -99;
@@ -239,46 +243,6 @@ exports.cancel = function (req, res) {
       });
       res.redirect('/tasks');
     }
-  } else {
-    res.json({
-      "status": "fail",
-      "user_id": user_id,
-      "task_id": task_id
-    });
-  }
-};
-
- /*
-  * GET Complete a task
-  */
-exports.complete = function (req, res) {
-  "use strict";
-
-  var user_id = -99;
-  var task_id = -99;
-
-  if (req.session.auth && parseInt(req.params.task_id, 10) > -1) {
-    user_id = req.session.auth.id;
-    task_id = req.params.task_id;
-    var fb = new Firebase(DB_BASE_URL + "users/" + user_id);
-    var epoch = Math.round(Date.now() / 1000);
-    // Get current completed_tasks
-    console.log(task_id);
-    fb.child("/currentTasks/task" + task_id).once('value', function (currentTask) {
-      console.log("outputing" + currentTask.val());
-      fb.child("/completedTasks/task" +task_id).once('value', function (completedTask) {
-        console.log("completeTasks " + completedTask);
-        if (completedTask.val() == null && currentTask.val().status == "taken") {
-        // Update current task info for user
-          fb.child("/currentTasks/task" + task_id).update({
-            "id": task_id,
-            "status": "review",
-            "stop": epoch
-          });
-        }
-        res.redirect('/tasks');
-      });
-    });
   } else {
     res.json({
       "status": "fail",
