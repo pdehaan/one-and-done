@@ -78,7 +78,7 @@
           "status": "taken",
           "start" : 1381884124
          },
-         "1" : {
+         "task1" : {
           "status": "review",
           "start": 1381884124
          }
@@ -103,6 +103,7 @@
      "0" : {
         "status" : "draft",
         "created" : 1381884199,
+        "author" : "onecyrenus@gmail,com",
         "urls" : ["http://www.google.com", "http://bugzilla.mozilla.com"],
         "instances" : 1,
         "order" : 1,
@@ -116,6 +117,7 @@
      "1" : {
         "status" : "published",
         "created" : 1381884199,
+        "author" : "onecyrenus@gmail,com",
         "order" : 2,
         "instances" : 1,
         "title" : "Install Add On to Nightly Channel Firefox",
@@ -128,6 +130,7 @@
      "2" : {
         "status" : "draft",
         "created" : 1381884199,
+        "author" : "edwong@mozilla,com",
         "order" : 5,
         "instances" : 2,
         "title" : "Log in to persona with a nightly build on B2G",
@@ -140,6 +143,7 @@
      "3" : {
         "status" : "published",
         "created" : 1381884199,
+        "author" : "onecyrenus@gmail,com",
         "order" : 3,
         "instances" : 1,
         "title" : "Download app in marketplace on android",
@@ -152,6 +156,7 @@
      "4" : {
         "status" : "published",
         "created" : 1381884199,
+        "author" : "pdehaan@mozilla,com",
         "order" : 4,
         "instances" : 1,
         "title" : "Fetch email on b2g phone",
