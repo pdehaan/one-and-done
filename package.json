@@ -18,14 +18,15 @@
   },
   "dependencies": {
     "browserid-verify": "~0.1.2",
-    "express": "3.4.0",
+    "express": "3.4.4",
     "firebase": "~0.6.3",
-    "jade": "*"
+    "jade": "*",
+    "marked": "~0.2.9"
   },
   "devDependencies": {
     "awsbox": "*",
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.4",
-    "load-grunt-tasks": "~0.1.0"
+    "grunt-contrib-jshint": "~0.7.0",
+    "load-grunt-tasks": "~0.2.0"
   }
 }

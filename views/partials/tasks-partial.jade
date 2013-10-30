@@ -14,10 +14,10 @@ if (userData && userData.currentTasks)
       each currentTask in userData.currentTasks
         - var task = tasks[currentTask.id]
         tr
-          th #{task.id}
+          th= task.id
           td
             a(href="/task/view/#{task.id}"): b= task.title
-            p #{task.description}
+            div!= task.description
           td.text-right
             if (currentTask.status == "taken")
               a.btn.btn-link.btn-sm(href="/task/cancel/#{task.id}")
@@ -43,8 +43,8 @@ table.table.table-hover.table-responsive.tasks-table
     - each task, index in tasks
       if task && task.instances != 0
         tr
-          th= index+1
+          th= task.id
           td
             a(href="/task/take/#{task.id}"): b= task.title
-            p= task.description
+            div!= task.description
           td.text-right: small= task.time
