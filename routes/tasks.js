@@ -1,3 +1,4 @@
+var marked = require("marked");
 var Firebase = require('firebase');
 var DB_BASE_URL = process.env.DB_BASE_URL || "https://oneanddone.firebaseIO.com/";
 
@@ -16,18 +17,28 @@ exports.tasks = function (req, res) {
     fb.child("users/" + user_id).once('value', function (userData) {
       //fetch all tasks
       fb.child('tasks').once('value', function (tasks) {
-        //Get user's current task
-          // Get user info
-          res.render("tasks", {
-            "userData": userData.val(),
-            "tasks": tasks.val()
-          });
+        tasks = tasks.val().map(function (task) {
+          task.description = marked(task.description);
+          return task;
+        });
+        // Get user's current task
+        // Get user info
+        res.render("tasks", {
+          "userData": userData.val(),
+          "tasks": tasks
+        });
       });
     });
   } else {
     //Get All Tasks
     fb.child('tasks').once('value', function (tasks) {
-      res.render("tasks", {"tasks": tasks.val()});
+      tasks = tasks.val().map(function (task) {
+        task.description = marked(task.description);
+        return task;
+      });
+      res.render("tasks", {
+        "tasks": tasks
+      });
     });
   }
 };
@@ -45,32 +56,33 @@ exports.view = function (req, res) {
   var user_id = null;
   function next() {
     fb.child("tasks/" + task_id).once('value', function (task) {
-      fb.child("taskcomments/task"+task_id).once('value', function (comments) {
+      fb.child("taskcomments/task" + task_id).once('value', function (comments) {
         var edited_comments = comments.val();
-       for (var index in edited_comments) {
-         delete edited_comments[index]['user'];
-       }
-       res.json("viewtask", {
-         "task": task.val(),
-         "comments": edited_comments,
-         "commentable": commentable,
-         "editable": editable
-       });
-     });
-   });
+        for (var index in edited_comments) {
+          delete edited_comments[index]['user'];
+        }
+        res.json("viewtask", {
+          "task": task.val(),
+          "comments": edited_comments,
+          "commentable": commentable,
+          "editable": editable
+        });
+      });
+    });
   }
   if (req.session.auth) {
     user_id = req.session.auth.id;
-    fb.child("/users/"+ user_id).once('value', function (user) {
+    fb.child("/users/" + user_id).once('value', function (user) {
       role = user.val().role;
-      if(role.substring("admin")) {
+      if (role.substring("admin")) {
         commentable = true;
-        editable = true; 
+        editable = true;
       } else {
         var currentTasks = user.val().currentTasks;
         for (var id in currentTasks) {
-          if(task_id == id.substring(4)) 
+          if (task_id === id.substring(4)) {
             commentable = true;
+          }
         }
       }
       next();
@@ -78,12 +90,13 @@ exports.view = function (req, res) {
   } else {
     next();
   }
-}
+};
+
 
 exports.create = function (req, res) {
+};
 
 
-}
 exports.take = function (req, res) {
   "use strict";
   var user_id = -99;
@@ -97,13 +110,13 @@ exports.take = function (req, res) {
     console.log('epoch: ' + epoch);
     console.log('task: ' + task_id);
     var fb2 = new Firebase(DB_BASE_URL);
-    fb2.child("tasks/"+task_id).once("value", function (task) {
+    fb2.child("tasks/" + task_id).once("value", function (task) {
       var instances = task.val().instances;
       if (instances >= 1) {
         instances--;
       }
       // Add new user with data
-      fb.child("currentTasks/task"+task_id).set({
+      fb.child("currentTasks/task" + task_id).set({
         "id": task_id,
         "status": "taken",
         "start": epoch,
@@ -138,15 +151,15 @@ exports.cancel = function (req, res) {
     task_id = req.params.task_id;
     var fb = new Firebase(DB_BASE_URL + "users/" + user_id);
     if (fb) {
-      fb.child("/currentTasks/task"+task_id).remove();
-      var taskRef = new Firebase(DB_BASE_URL +"tasks/");
+      fb.child("/currentTasks/task" + task_id).remove();
+      var taskRef = new Firebase(DB_BASE_URL + "tasks/");
       taskRef.child(task_id).once('value', function (task) {
         var instances = task.val().instances;
-        if (instances >=0) {
+        if (instances >= 0) {
           instances++;
         }
         taskRef.child(task_id).update({
-            "instances" : instances
+          "instances": instances
         });
       });
       res.redirect('/tasks');
@@ -178,9 +191,9 @@ exports.complete = function (req, res) {
     console.log(task_id);
     fb.child("/currentTasks/task" + task_id).once('value', function (currentTask) {
       console.log("outputing" + currentTask.val());
-      fb.child("/completedTasks/task" +task_id).once('value', function (completedTask) {
+      fb.child("/completedTasks/task" + task_id).once('value', function (completedTask) {
         console.log("completeTasks " + completedTask);
-        if (completedTask.val() == null && currentTask.val().status == "taken") {
+        if (completedTask.val() == null && currentTask.val().status === "taken") {
         // Update current task info for user
           fb.child("/currentTasks/task" + task_id).update({
             "id": task_id,
