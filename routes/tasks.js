@@ -61,7 +61,7 @@ exports.view = function (req, res) {
         for (var index in edited_comments) {
           delete edited_comments[index]['user'];
         }
-        res.json("viewtask", {
+        res.render("viewtask", {
           "task": task.val(),
           "comments": edited_comments,
           "commentable": commentable,
