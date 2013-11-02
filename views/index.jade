@@ -3,35 +3,88 @@ extends layout
 block content
   header.jumbotron.alert.alert-info
     div.container
-      include partials/dino
 
-      h1 Mozilla One and Done
+      h1 One and Done
+        br
+        small Contribute to Mozilla QA &mdash; one task at a time, one day at a time.
 
-      p The "One and Done" initiative, previously known as "QA Taskboard", is a workflow where Mozilla community contributors can pick tasks and work on them - one at a time, one day at a time - and feel good about doing them.
+      // include partials/dino
+
+      img.pull-left.ico(src="/images/qmo.png")
+
+      p.lead Come and make a meaningful contribution to Mozilla QA daily based on your time availability and skill level. Work with us to improve the quality of what we produce and feel rewarded.
+
+      p.pull-right [Sign in with Mozilla Persona]
+
+  div.row
+    div.col-md-6.col-md-offset-3
+      hr
 
   div.row
     div.col-xs-12.col-md-8
-      p.lead Mozilla QA sees the "One and Done" initiative as a way for Mozilla community contributors to get introduced to various projects and then to become involved in an area of their interest.
+      h2 Our Teams
 
-      p Contributors would be able to find their voice in the community, be able to engage meaningfully, and feel rewarded for their contribution.
+      div.row
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/automation")
+                img(src="/images/automation-150x150.jpg")
+                p Automation
+          p We build automated tests to run against Mozilla websites to make sure they are working as expected.
 
-      hr
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/desktop-firefox//")
+                img(src="/images/firefox-150x150.jpg")
+                p Desktop QA
+          p We test Desktop Firefox for new features and resolved issues before release.
 
-      p Retro asymmetrical Banksy raw denim, cupidatat shabby chic Marfa hella sint disrupt fixie sartorial ethical church-key kogi. Sartorial twee artisan, viral pariatur Echo Park assumenda polaroid et High Life semiotics street art DIY qui. Polaroid viral Banksy minim banjo Portland Wes Anderson voluptate DIY aesthetic McSweeney's Austin Cosby sweater. Selfies paleo laborum, fingerstache Odd Future cornhole jean shorts actually semiotics placeat. Ennui direct trade fanny pack scenester, cred Schlitz sriracha small batch lo-fi shabby chic skateboard pariatur qui. Master cleanse officia kogi, hashtag viral consequat ugh. Proident Schlitz hella sriracha.
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/web-qa/")
+                img(src="/images/webqa-150x150.jpg")
+                p Web QA
+          p We ensure that all Mozilla websites are high quality, secure, and user friendly.
 
-      p Chia dreamcatcher scenester vegan. Dolore actually put a bird on it, quinoa vero Tumblr odio artisan four loko sriracha ethnic salvia dreamcatcher. DIY beard butcher odio hashtag. Magna velit fugiat, banh mi nisi Intelligentsia commodo. Disrupt et twee Pinterest, church-key sapiente dreamcatcher leggings authentic you probably haven't heard of them nisi pug literally delectus slow-carb. Placeat et pop-up, food truck 3 wolf moon distillery try-hard PBR YOLO artisan 8-bit ethnic. Incididunt flannel tote bag, velit +1 nisi butcher Austin synth quinoa.
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/thunderbird/")
+                img(src="/images/thunderbird-150x150.jpg")
+                p Thunderbird
+          p We test the Thunderbird mail client for resolved issues before release.
 
-      p Banksy before they sold out consequat, cornhole you probably haven't heard of them culpa hoodie photo booth literally put a bird on it irony squid shabby chic. Kogi voluptate eu put a bird on it dreamcatcher, XOXO squid consectetur food truck polaroid stumptown messenger bag dolore commodo letterpress. Culpa 3 wolf moon exercitation Banksy retro DIY. PBR pickled Truffaut before they sold out, accusamus meggings proident farm-to-table jean shorts locavore sustainable. Umami fixie commodo, McSweeney's iPhone aesthetic pickled. Cillum proident salvia mlkshk, ex forage tote bag Echo Park Banksy American Apparel master cleanse exercitation semiotics synth vero. Quinoa tote bag voluptate, Blue Bottle ullamco fugiat kitsch eiusmod Schlitz Shoreditch flexitarian brunch officia 90's.
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/services/")
+                img(src="/images/services-150x150.jpg")
+                p Services QA
+          p We test Mozilla's private and secure user-controlled services for Firefox, desktop and mobile.
 
-      p Mustache cardigan fugiat, flexitarian chambray voluptate odio DIY ennui selvage. Dolor consectetur Blue Bottle, Schlitz nulla et chia. Vice laborum Cosby sweater twee deserunt. Odd Future eu organic, Truffaut fugiat cupidatat Austin American Apparel nulla pariatur Etsy fanny pack Helvetica. Elit hoodie veniam viral authentic kale chips, wolf ea roof party nostrud. Nihil id narwhal, single-origin coffee ut ethical YOLO kale chips nostrud labore qui banjo tousled street art. Seitan scenester freegan mlkshk fap, pour-over culpa.
+        article.col-xs-12.col-sm-6.col-md-4
+          header
+            h3
+              a(href="https://quality.mozilla.org/teams/mobile/")
+                img(src="/images/mobilefirefox-150x150.jpg")
+                p Mobile Firefox
+          p We test Firefox for Android and Firefox OS, a new mobile operating system.
 
-      p Do you need some dummy text? *sigh* Of course you do.
-
-      p I bet you still use Helvetica too…
 
     div.col-xs-12.col-md-4
       div.well
         include partials/leaderboard-partial
+
+  div.row
+    div.col-md-6.col-md-offset-3
+      hr
+
+  div
+    h2 Get Involved
+    p.lead You can help us with tasks like looking for bugs in the software we produce, helping us triage them in our bug tracking tool, creating new test cases, execiting test cases on early releases, automating our tests, and participating in our test days.
 
 block inlinescript
   script.
